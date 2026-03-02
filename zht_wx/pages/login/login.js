@@ -1,3 +1,4 @@
+// pages/login/login.js
 const { userApi } = require('../../utils/api');
 const app = getApp();
 
@@ -9,7 +10,6 @@ Page({
     loading: false,
     canGetPhone: true,
     canLogin: false,
-    avatar: ''
   },
 
   onLoad() {
@@ -25,12 +25,40 @@ Page({
 
   // 获取用户信息
   onGetUserInfo(e) {
-    if (e.detail.userInfo) {
+    if (e.detail.errMsg === 'getUserInfo:ok') {
       const { nickName, avatarUrl } = e.detail.userInfo;
       this.setData({
         nickname: nickName,
         avatar: avatarUrl,
-        canLogin: this.data.agree && nickName
+        canLogin: this.data.agree && nickName.length > 0 // 手机号不再是必需项
+      });
+    } else {
+      console.log('获取用户信息失败', e.detail.errMsg);
+      wx.showToast({
+        title: '获取用户信息失败，请重试',
+        icon: 'none'
+      });
+    }
+  },
+
+  // 获取手机号
+  getPhoneNumber(e) {
+    if (e.detail.errMsg === 'getPhoneNumber:ok') {
+      console.log('获取手机号成功', e.detail);
+      this.setData({
+        phone: '138****8888', // 实际应用中这里应该是真实获取到的手机号
+        canLogin: this.data.nickname.length > 0 && this.data.agree // 手机号不再是必需项
+      });
+    } else {
+      console.log('获取手机号失败', e.detail.errMsg);
+      // 如果获取手机号失败，仍然允许用户继续登录
+      wx.showToast({
+        title: '获取手机号失败，可稍后在个人中心补充',
+        icon: 'none'
+      });
+      // 允许用户继续，不强制需要手机号
+      this.setData({
+        canLogin: this.data.nickname.length > 0 && this.data.agree
       });
     }
   },
@@ -40,45 +68,8 @@ Page({
     const nickname = e.detail.value.trim();
     this.setData({ 
       nickname,
-      canLogin: nickname.length > 0 && this.data.agree
+      canLogin: nickname.length > 0 && this.data.agree // 手机号不再是必需项
     });
-  },
-
-  // 获取手机号
-  getPhoneNumber(e) {
-    if (e.detail.errMsg === 'getPhoneNumber:ok') {
-      // 这里只是模拟获取手机号，实际应用中需要通过后端解密获取真实手机号
-      // 因为前端直接获取的是加密数据，需要后端解密
-      console.log('获取手机号成功', e.detail);
-      // 模拟获取到手机号后更新界面
-      this.setData({
-        phone: '138****8888', // 实际应用中这里应该是真实获取到的手机号
-        canLogin: this.data.nickname.length > 0 && this.data.agree
-      });
-    } else {
-      console.log('获取手机号失败', e.detail.errMsg);
-      // 如果获取手机号失败，仍然允许用户继续登录，仅显示提示
-      wx.showModal({
-        title: '提示',
-        content: '获取手机号失败，您可以先注册再绑定手机号',
-        showCancel: true,
-        cancelText: '暂不绑定',
-        confirmText: '手动输入',
-        success: (res) => {
-          if (res.confirm) {
-            // 如果用户选择手动输入，跳转到输入手机号页面
-            wx.navigateTo({
-              url: '/pages/user/edit?field=phone',
-            });
-          } else {
-            // 暂不绑定也允许登录
-            this.setData({
-              canLogin: this.data.nickname.length > 0 && this.data.agree
-            });
-          }
-        }
-      });
-    }
   },
 
   // 同意协议
@@ -86,7 +77,7 @@ Page({
     const agree = e.detail.value;
     this.setData({ 
       agree,
-      canLogin: this.data.nickname.length > 0 && agree
+      canLogin: this.data.nickname.length > 0 && agree // 手机号不再是必需项
     });
   },
 
@@ -119,7 +110,7 @@ Page({
       const res = await userApi.login({
         code: code,
         nickname: this.data.nickname,
-        phone: this.data.phone, // 实际项目中应使用从后端解密后的手机号
+        phone: this.data.phone || '', // 手机号变为可选项
         avatar: this.data.avatar || ''
       });
 

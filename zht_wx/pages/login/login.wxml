@@ -1,4 +1,3 @@
-<!--pages/login/login.wxml-->
 <view class="container">
   <view class="logo">
     <image class="logo-img" src="/images/logo.png" mode="aspectFit"></image>
@@ -22,8 +21,8 @@
     
     <view class="form-item">
       <button class="phone-btn" type="default" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" hover-class="btn-hover">
-        <text wx:if="{{phone}}">{{phone}}</text>
-        <text wx:else>获取手机号</text>
+        <text wx:if="{{phone}}">已获取手机号：{{phone}}</text>
+        <text wx:else>可选：获取手机号</text>
       </button>
     </view>
   </view>
