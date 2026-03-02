@@ -1,51 +1,66 @@
 // pages/item/my.js
-const { itemApi } = require('../../utils/api');
-
 Page({
+
+  /**
+   * 页面的初始数据
+   */
   data: {
-    itemList: [],
-    statusMap: ['未知', '在售', '已下架']
+
   },
 
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
   onShow() {
-    this.loadList();
+
   },
 
-  async loadList() {
-    try {
-      const res = await itemApi.getMyItems({ current: 1, size: 50 });
-      this.setData({ itemList: res.data.records || [] });
-    } catch (err) {
-      console.error('加载失败', err);
-    }
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
   },
 
-  toDetail(e) {
-    const itemId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/item/detail?id=${itemId}` });
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
   },
 
-  editItem(e) {
-    const itemId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/item/edit?id=${itemId}` });
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+
   },
 
-  deleteItem(e) {
-    const itemId = e.currentTarget.dataset.id;
-    wx.showModal({
-      title: '确认删除',
-      content: '确定要删除这个物品吗？',
-      success: async (res) => {
-        if (res.confirm) {
-          try {
-            await itemApi.delete(itemId);
-            wx.showToast({ title: '删除成功', icon: 'success' });
-            this.loadList();
-          } catch (err) {
-            console.error('删除失败', err);
-          }
-        }
-      }
-    });
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
   }
-});
+})

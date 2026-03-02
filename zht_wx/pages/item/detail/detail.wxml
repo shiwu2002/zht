@@ -1,0 +1,49 @@
+<!--pages/item/detail.wxml-->
+<view class="container" wx:if="{{detail}}">
+  <!-- 图片轮播 -->
+  <swiper class="image-swiper" indicator-dots autoplay>
+    <swiper-item wx:for="{{detail.images}}" wx:key="*this">
+      <image class="slide-image" src="{{item}}" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 基本信息 -->
+  <view class="info-section">
+    <text class="title">{{detail.title}}</text>
+    <view class="price-row">
+      <text class="price">¥ {{detail.price}}</text>
+      <text class="exchange-type">{{exchangeTypes[detail.exchangeType]}}</text>
+    </view>
+    <text class="location">📍 {{detail.location}}</text>
+    <text class="time">发布时间：{{detail.createTime}}</text>
+  </view>
+
+  <!-- 描述 -->
+  <view class="desc-section">
+    <text class="section-title">物品描述</text>
+    <text class="desc-content">{{detail.description}}</text>
+  </view>
+
+  <!-- 卖家信息 -->
+  <view class="seller-section" bindtap="toSeller">
+    <image class="avatar" src="{{detail.userAvatar}}" mode="aspectFill"></image>
+    <view class="seller-info">
+      <text class="nickname">{{detail.userNickname}}</text>
+      <text class="credit">信用分：{{detail.userCredit}}</text>
+    </view>
+    <text class="arrow">></text>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar">
+    <view class="action-btn" bindtap="onFavorite">
+      <text>{{isFavorite ? '❤️' : '🤍'}}</text>
+      <text>{{isFavorite ? '已收藏' : '收藏'}}</text>
+    </view>
+    <view class="action-btn" bindtap="onMessage">
+      <text>💬</text>
+      <text>消息</text>
+    </view>
+    <button class="exchange-btn" bindtap="onExchange">发起交换</button>
+  </view>
+</view>

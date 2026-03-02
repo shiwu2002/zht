@@ -1,80 +1,66 @@
 // pages/exchange/create.js
-const { exchangeApi, itemApi } = require('../../utils/api');
-
 Page({
+
+  /**
+   * 页面的初始数据
+   */
   data: {
-    requestItemId: 0,
-    offerItemId: 0,
-    requestItem: null,
-    offerItem: null,
-    message: '',
-    loading: false
+
   },
 
+  /**
+   * 生命周期函数--监听页面加载
+   */
   onLoad(options) {
-    if (options.itemId) {
-      this.setData({ requestItemId: options.itemId });
-      this.loadRequestItem();
-    }
+
   },
 
-  async loadRequestItem() {
-    try {
-      const res = await itemApi.getDetail(this.data.requestItemId);
-      this.setData({ requestItem: res.data });
-    } catch (err) {
-      console.error('加载物品失败', err);
-    }
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
   },
 
-  // 选择提供的物品
-  selectOfferItem() {
-    wx.navigateTo({
-      url: `/pages/item/select?type=offer&excludeId=${this.data.requestItemId}`
-    });
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+
   },
 
-  // 留言输入
-  onMessageInput(e) {
-    this.setData({ message: e.detail.value });
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
   },
 
-  // 提交交换
-  async onSubmit() {
-    if (!this.data.offerItemId) {
-      wx.showToast({ title: '请选择提供的物品', icon: 'none' });
-      return;
-    }
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
 
-    this.setData({ loading: true });
+  },
 
-    try {
-      await exchangeApi.create({
-        requestItemId: this.data.requestItemId,
-        offerItemId: this.data.offerItemId,
-        message: this.data.message
-      });
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
 
-      wx.showToast({ title: '发起成功', icon: 'success' });
-      setTimeout(() => {
-        wx.navigateBack();
-      }, 1500);
-    } catch (err) {
-      console.error('发起交换失败', err);
-    } finally {
-      this.setData({ loading: false });
-    }
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
   }
-});
-
-// 监听选择物品返回
-Page.prototype.onShow = function() {
-  const selectedItem = getApp().globalData.selectedOfferItem;
-  if (selectedItem) {
-    this.setData({
-      offerItem: selectedItem,
-      offerItemId: selectedItem.id
-    });
-    getApp().globalData.selectedOfferItem = null;
-  }
-};
+})

@@ -1,61 +1,66 @@
 // pages/item/list.js
-const { itemApi } = require('../../utils/api');
-
 Page({
+
+  /**
+   * 页面的初始数据
+   */
   data: {
-    categoryId: 0,
-    categoryName: '',
-    itemList: [],
-    loading: false,
-    hasMore: true,
-    current: 1,
-    size: 10
+
   },
 
+  /**
+   * 生命周期函数--监听页面加载
+   */
   onLoad(options) {
-    this.setData({
-      categoryId: options.categoryId,
-      categoryName: options.categoryName
-    });
-    wx.setNavigationBarTitle({ title: options.categoryName || '物品列表' });
-    this.loadList();
+
   },
 
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
   onReachBottom() {
-    if (!this.data.loading && this.data.hasMore) {
-      this.loadList();
-    }
+
   },
 
-  async loadList() {
-    if (this.data.loading) return;
-    this.setData({ loading: true });
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
 
-    try {
-      const res = await itemApi.getList({
-        current: this.data.current,
-        size: this.data.size,
-        categoryId: this.data.categoryId
-      });
-
-      const newList = this.data.current === 1 
-        ? res.data.records 
-        : [...this.data.itemList, ...res.data.records];
-
-      this.setData({
-        itemList: newList,
-        hasMore: this.data.current < res.data.pages,
-        current: this.data.current + 1
-      });
-    } catch (err) {
-      console.error('加载失败', err);
-    } finally {
-      this.setData({ loading: false });
-    }
-  },
-
-  toDetail(e) {
-    const itemId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/item/detail?id=${itemId}` });
   }
-});
+})

@@ -1,20 +1,2 @@
 <!--pages/item/my.wxml-->
-<view class="container">
-  <view class="item-list">
-    <view class="item-card" wx:for="{{itemList}}" wx:key="id" data-id="{{item.id}}" bindtap="toDetail">
-      <image class="item-image" src="{{item.images[0]}}" mode="aspectFill"></image>
-      <view class="item-info">
-        <text class="item-title">{{item.title}}</text>
-        <view class="item-status">
-          <text class="status-tag status-{{item.status}}">{{statusMap[item.status]}}</text>
-          <text class="item-meta">👁 {{item.viewCount}} ❤️ {{item.likeCount}}</text>
-        </view>
-      </view>
-      <view class="item-actions">
-        <view class="action-btn edit" catchtap="editItem" data-id="{{item.id}}">编辑</view>
-        <view class="action-btn delete" catchtap="deleteItem" data-id="{{item.id}}">删除</view>
-      </view>
-    </view>
-  </view>
-  <view class="empty" wx:if="{{itemList.length === 0}}">暂无发布</view>
-</view>
+<text>pages/item/my.wxml</text>

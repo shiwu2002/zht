@@ -1,64 +1,66 @@
 // pages/exchange/detail.js
-const { exchangeApi } = require('../../utils/api');
-
 Page({
+
+  /**
+   * 页面的初始数据
+   */
   data: {
-    id: 0,
-    detail: null,
-    userId: 0,
-    statusMap: ['未知', '待确认', '进行中', '已完成', '已取消', '已拒绝']
+
   },
 
+  /**
+   * 生命周期函数--监听页面加载
+   */
   onLoad(options) {
-    this.setData({ id: options.id });
-    const userInfo = wx.getStorageSync('userInfo');
-    this.setData({ userId: userInfo?.id || 0 });
-    this.loadDetail();
+
   },
 
-  async loadDetail() {
-    try {
-      const res = await exchangeApi.getDetail(this.data.id);
-      this.setData({ detail: res.data });
-    } catch (err) {
-      console.error('加载详情失败', err);
-    }
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
+
   },
 
-  async onConfirm() {
-    wx.showModal({
-      title: '确认交换',
-      content: '确认完成这次交换吗？',
-      success: async (res) => {
-        if (res.confirm) {
-          try {
-            await exchangeApi.confirm(this.data.id);
-            wx.showToast({ title: '确认成功', icon: 'success' });
-            this.loadDetail();
-          } catch (err) {
-            console.error('确认失败', err);
-          }
-        }
-      }
-    });
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+
   },
 
-  async onReject() {
-    wx.showModal({
-      title: '拒绝交换',
-      editable: true,
-      placeholderText: '请输入拒绝原因',
-      success: async (res) => {
-        if (res.confirm) {
-          try {
-            await exchangeApi.reject(this.data.id, res.content || '无理由');
-            wx.showToast({ title: '已拒绝', icon: 'success' });
-            this.loadDetail();
-          } catch (err) {
-            console.error('拒绝失败', err);
-          }
-        }
-      }
-    });
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
   }
-});
+})
