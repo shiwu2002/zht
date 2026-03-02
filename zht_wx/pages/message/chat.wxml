@@ -1,0 +1,18 @@
+<!--pages/message/chat.wxml-->
+<view class="container">
+  <scroll-view class="message-list" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation>
+    <view class="message-item {{item.senderId === userId ? 'self' : 'other'}}" 
+          wx:for="{{messages}}" wx:key="id" id="msg-{{index}}">
+      <image class="avatar" src="{{item.senderId === userId ? userInfo.avatar : otherAvatar}}" mode="aspectFill"></image>
+      <view class="message-content">
+        <text class="message-text">{{item.content}}</text>
+        <text class="message-time">{{item.createTime}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input class="input" placeholder="输入消息..." value="{{inputValue}}" bindinput="onInput" confirm-type="send" bindconfirm="onSend" />
+    <view class="send-btn" bindtap="onSend">发送</view>
+  </view>
+</view>

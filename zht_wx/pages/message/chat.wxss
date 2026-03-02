@@ -1,0 +1,77 @@
+/* pages/message/chat.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f5f5f5;
+}
+
+.message-list {
+  flex: 1;
+  padding: 30rpx;
+}
+
+.message-item {
+  display: flex;
+  margin-bottom: 30rpx;
+}
+
+.message-item.self {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.message-content {
+  max-width: 500rpx;
+  padding: 20rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  margin: 0 20rpx;
+}
+
+.message-item.self .message-content {
+  background: #07c160;
+  color: #ffffff;
+}
+
+.message-text {
+  font-size: 28rpx;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.message-time {
+  font-size: 22rpx;
+  opacity: 0.6;
+}
+
+.input-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background: #ffffff;
+  border-top: 1rpx solid #eeeeee;
+}
+
+.input {
+  flex: 1;
+  height: 72rpx;
+  background: #f5f5f5;
+  border-radius: 36rpx;
+  padding: 0 30rpx;
+  font-size: 28rpx;
+}
+
+.send-btn {
+  margin-left: 20rpx;
+  padding: 16rpx 32rpx;
+  background: #07c160;
+  color: #ffffff;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+}

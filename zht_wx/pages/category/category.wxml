@@ -1,0 +1,11 @@
+<!--pages/category/category.wxml-->
+<view class="container">
+  <view class="category-grid">
+    <view class="category-card" wx:for="{{categories}}" wx:key="id" 
+          data-id="{{item.id}}" data-name="{{item.name}}" bindtap="onCategoryTap">
+      <text class="category-icon">{{item.icon || '📦'}}</text>
+      <text class="category-name">{{item.name}}</text>
+      <text class="category-count">{{item.count || 0}}件</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,79 @@
+/* pages/message/list.wxss */
+.container {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.conversation-list {
+  background: #ffffff;
+}
+
+.conversation-item {
+  display: flex;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.conversation-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.conversation-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.username {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.time {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.conversation-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content {
+  flex: 1;
+  font-size: 26rpx;
+  color: #999999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.content.unread {
+  color: #333333;
+  font-weight: bold;
+}
+
+.badge {
+  background: #ff4444;
+  color: #ffffff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  margin-left: 20rpx;
+}
+
+.empty {
+  text-align: center;
+  padding: 200rpx 0;
+  color: #999999;
+  font-size: 28rpx;
+}

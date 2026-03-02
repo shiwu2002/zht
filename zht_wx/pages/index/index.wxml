@@ -1,0 +1,46 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input" bindtap="toSearch">
+      <text class="iconfont">🔍</text>
+      <text class="placeholder">搜索物品</text>
+    </view>
+    <view class="publish-btn" bindtap="toPublish">
+      <text>+</text>
+    </view>
+  </view>
+
+  <!-- 分类导航 -->
+  <view class="category-nav">
+    <view class="category-item {{currentCategory === 0 ? 'active' : ''}}" 
+          data-id="0" bindtap="onCategoryTap">
+      <text>全部</text>
+    </view>
+    <view class="category-item {{currentCategory === item.id ? 'active' : ''}}" 
+          wx:for="{{categories}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="onCategoryTap">
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 物品列表 -->
+  <view class="item-list">
+    <view class="item-card" wx:for="{{itemList}}" wx:key="id" 
+          data-id="{{item.id}}" bindtap="toDetail">
+      <image class="item-image" src="{{item.images[0]}}" mode="aspectFill"></image>
+      <view class="item-info">
+        <text class="item-title">{{item.title}}</text>
+        <text class="item-desc">{{item.description}}</text>
+        <view class="item-meta">
+          <text class="item-location">📍 {{item.location}}</text>
+          <text class="item-favorite">❤️ {{item.favoriteCount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{loading}}">加载中...</view>
+  <view class="no-more" wx:if="{{!hasMore && itemList.length > 0}}">没有更多了</view>
+</view>

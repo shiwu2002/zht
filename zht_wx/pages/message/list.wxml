@@ -1,0 +1,23 @@
+<!--pages/message/list.wxml-->
+<view class="container">
+  <view class="conversation-list">
+    <view class="conversation-item" wx:for="{{conversations}}" wx:key="userId" 
+          data-user="{{item}}" bindtap="toChat">
+      <image class="avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
+      <view class="conversation-info">
+        <view class="conversation-header">
+          <text class="username">{{item.userNickname}}</text>
+          <text class="time">{{item.lastTime}}</text>
+        </view>
+        <view class="conversation-content">
+          <text class="content {{item.unread ? 'unread' : ''}}">{{item.lastContent}}</text>
+          <view class="badge" wx:if="{{item.unreadCount > 0}}">{{item.unreadCount}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{conversations.length === 0}}">
+    <text>暂无消息</text>
+  </view>
+</view>

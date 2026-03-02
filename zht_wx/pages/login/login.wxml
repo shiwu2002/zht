@@ -1,0 +1,50 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <view class="logo">
+    <image class="logo-img" src="/images/logo.png" mode="aspectFit"></image>
+    <text class="logo-text">置换通</text>
+  </view>
+
+  <view class="form">
+    <view class="form-item avatar-section">
+      <view class="avatar-wrapper" wx:if="{{avatar}}">
+        <image class="avatar" src="{{avatar}}" mode="aspectFill"></image>
+        <text class="nickname">{{nickname || '微信用户'}}</text>
+      </view>
+      <button class="avatar-btn" wx:else open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" hover-class="btn-hover">
+        <text>点击设置头像和昵称</text>
+      </button>
+    </view>
+    
+    <view class="form-item">
+      <input class="input" type="text" placeholder="请输入昵称" value="{{nickname}}" bindinput="onNicknameInput" />
+    </view>
+    
+    <view class="form-item">
+      <button class="phone-btn" type="default" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" hover-class="btn-hover">
+        <text wx:if="{{phone}}">{{phone}}</text>
+        <text wx:else>获取手机号</text>
+      </button>
+    </view>
+  </view>
+
+  <view class="agree">
+    <label class="agree-label">
+      <checkbox class="agree-checkbox" checked="{{agree}}" bindchange="onAgreeChange" color="#07c160" />
+      <text>我已阅读并同意</text>
+      <text class="link" bindtap="showAgreement">《用户协议》</text>
+    </label>
+  </view>
+
+  <button class="login-btn" type="primary" bindtap="onLogin" loading="{{loading}}" disabled="{{!canLogin}}" hover-class="btn-hover">
+    <text wx:if="{{!loading}}">授权登录</text>
+    <text wx:else>登录中...</text>
+  </button>
+
+  <view class="tips">
+    <text>登录即代表您同意</text>
+    <text class="link" bindtap="showAgreement">《用户协议》</text>
+    <text>和</text>
+    <text class="link" bindtap="showAgreement">《隐私政策》</text>
+  </view>
+</view>

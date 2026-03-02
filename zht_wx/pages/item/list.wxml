@@ -1,0 +1,18 @@
+<!--pages/item/list.wxml-->
+<view class="container">
+  <view class="item-list">
+    <view class="item-card" wx:for="{{itemList}}" wx:key="id" data-id="{{item.id}}" bindtap="toDetail">
+      <image class="item-image" src="{{item.images[0]}}" mode="aspectFill"></image>
+      <view class="item-info">
+        <text class="item-title">{{item.title}}</text>
+        <text class="item-desc">{{item.description}}</text>
+        <view class="item-meta">
+          <text>📍 {{item.location}}</text>
+          <text>❤️ {{item.favoriteCount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="empty" wx:if="{{itemList.length === 0}}">暂无物品</view>
+  <view class="load-more" wx:if="{{loading}}">加载中...</view>
+</view>

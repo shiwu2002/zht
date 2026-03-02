@@ -1,0 +1,17 @@
+/* pages/item/my.wxss */
+.container { padding: 20rpx; background: #f5f5f5; min-height: 100vh; }
+.item-list { display: flex; flex-direction: column; gap: 20rpx; }
+.item-card { display: flex; background: #ffffff; border-radius: 16rpx; overflow: hidden; }
+.item-image { width: 200rpx; height: 200rpx; }
+.item-info { flex: 1; padding: 20rpx; }
+.item-title { font-size: 28rpx; font-weight: bold; display: block; margin-bottom: 16rpx; }
+.item-status { display: flex; align-items: center; gap: 20rpx; }
+.status-tag { font-size: 22rpx; padding: 4rpx 12rpx; border-radius: 20rpx; }
+.status-1 { color: #07c160; background: #e8f9f0; }
+.status-2 { color: #999999; background: #f5f5f5; }
+.item-meta { font-size: 22rpx; color: #999999; }
+.item-actions { display: flex; flex-direction: column; padding: 20rpx; gap: 10rpx; }
+.action-btn { padding: 10rpx 20rpx; font-size: 24rpx; border-radius: 20rpx; }
+.edit { background: #1890ff; color: #ffffff; }
+.delete { background: #ff4444; color: #ffffff; }
+.empty { text-align: center; padding: 200rpx 0; color: #999999; }
