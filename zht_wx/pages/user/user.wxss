@@ -127,16 +127,10 @@
   background: #f5f5f5;
 }
 
-.menu-icon {
-  width: 60rpx;
-  height: 60rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(7, 193, 96, 0.1);
-  border-radius: 16rpx;
+.menu-icon-img {
+  width: 48rpx;
+  height: 48rpx;
   margin-right: 24rpx;
-  font-size: 32rpx;
 }
 
 .menu-text {

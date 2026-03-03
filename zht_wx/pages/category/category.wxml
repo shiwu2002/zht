@@ -4,7 +4,7 @@
   <!-- 搜索栏 -->
   <view class="search-bar">
     <view class="search-input">
-      <text class="search-icon">🔍</text>
+      <image class="search-icon" src="/images/carouseChart/sousuo.png" mode="aspectFit"></image>
       <input class="input" placeholder="搜索分类" bindinput="onSearch" />
     </view>
   </view>
@@ -20,9 +20,7 @@
   <view class="category-grid">
     <view class="category-card" wx:for="{{filteredCategories}}" wx:key="id" 
           data-id="{{item.id}}" data-name="{{item.name}}" bindtap="onCategoryTap">
-      <view class="icon-wrapper {{'icon-' + item.iconClass}}">
-        <text class="iconfont">{{item.iconUnicode || '📦'}}</text>
-      </view>
+      <image class="category-icon-img" src="{{item.iconPath}}" mode="aspectFit"></image>
       <text class="category-name">{{item.name}}</text>
       <view class="category-footer">
         <text class="category-count">{{item.count || 0}}</text>

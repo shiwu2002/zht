@@ -1,17 +1,18 @@
 // pages/category/category.js
 const { categoryApi, itemApi } = require('../../utils/api');
 
-// 分类图标映射（从 iconfont 获取的 Unicode 编码）
-// 访问 https://www.iconfont.cn 搜索对应图标，添加到项目中后获取 Unicode
+// 分类图标映射（使用后端返回的 icon 字段作为键）
 const CATEGORY_ICONS = {
-  '教材': { iconClass: 'book', iconUnicode: '\ue62d' },
-  '数码': { iconClass: 'digital', iconUnicode: '\ue652' },
-  '服饰': { iconClass: 'clothes', iconUnicode: '\ue609' },
-  '生活': { iconClass: 'life', iconUnicode: '\ue636' },
-  '运动': { iconClass: 'sport', iconUnicode: '\ue645' },
-  '美食': { iconClass: 'food', iconUnicode: '\ue618' },
-  '美妆': { iconClass: 'beauty', iconUnicode: '\ue601' },
-  '其他': { iconClass: 'other', iconUnicode: '\ue644' }
+  'book': '/images/classify/book.png',
+  'digital': '/images/classify/digital.png',
+  'clothes': '/images/classify/clothes.png',
+  'home': '/images/classify/home.png',
+  'sports': '/images/classify/sports.png',
+  'food': '/images/classify/food.png',
+  'beauty': '/images/classify/beauty.png',
+  'toy': '/images/classify/toy.png',
+  'stationery': '/images/classify/stationery.png',
+  'other': '/images/classify/other.png'
 };
 
 Page({
@@ -29,12 +30,11 @@ Page({
     try {
       const res = await categoryApi.getList();
       const categories = (res.data || []).map(item => {
-        // 根据分类名称匹配图标
-        const iconConfig = this.getIconByCategory(item.name);
+        // 根据后端返回的 icon 字段精确匹配图标
+        const iconPath = this.getIconByCategory(item.icon);
         return {
           ...item,
-          iconClass: iconConfig.iconClass,
-          iconUnicode: iconConfig.iconUnicode
+          iconPath: iconPath
         };
       });
       
@@ -51,15 +51,14 @@ Page({
     }
   },
 
-  // 根据分类名称获取图标配置
-  getIconByCategory(categoryName) {
-    for (const [key, config] of Object.entries(CATEGORY_ICONS)) {
-      if (categoryName.includes(key)) {
-        return config;
-      }
+  // 根据后端返回的 icon 字段获取图标路径
+  getIconByCategory(iconKey) {
+    // 精确匹配 icon 字段
+    if (iconKey && CATEGORY_ICONS[iconKey]) {
+      return CATEGORY_ICONS[iconKey];
     }
     // 默认返回其他图标
-    return CATEGORY_ICONS['其他'];
+    return CATEGORY_ICONS['other'];
   },
 
   // 搜索分类

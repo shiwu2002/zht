@@ -87,22 +87,16 @@
   padding: 10rpx;
 }
 
-.category-icon {
-  width: 100rpx;
-  height: 100rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f8f8f8;
-  border-radius: 50%;
+.category-icon-img {
+  width: 90rpx;
+  height: 90rpx;
   margin-bottom: 12rpx;
-  font-size: 48rpx;
   transition: all 0.3s;
 }
 
-.category-icon.active {
-  background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
-  box-shadow: 0 4rpx 12rpx rgba(7, 193, 96, 0.3);
+.category-icon-img.active {
+  transform: scale(1.1);
+  filter: brightness(0) saturate(100%) invert(41%) sepia(96%) saturate(426%) hue-rotate(99deg) brightness(97%) contrast(92%);
 }
 
 .category-name {

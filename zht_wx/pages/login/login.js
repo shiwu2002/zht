@@ -8,12 +8,9 @@ Page({
     avatar: '',
     isEditingNickname: false,
     defaultAvatars: [
-      'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
-      'https://api.dicebear.com/7.x/avataaars/svg?seed=2',
-      'https://api.dicebear.com/7.x/avataaars/svg?seed=3',
-      'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
-      'https://api.dicebear.com/7.x/avataaars/svg?seed=5',
-      'https://api.dicebear.com/7.x/avataaars/svg?seed=6'
+      '/images/login/morentouxiang.png',
+      '/images/login/nansheng.png',
+      '/images/login/nvsheng.png'
     ]
   },
 
@@ -95,8 +92,9 @@ Page({
       avatar: this.data.avatar
     }).then(res => {
       // 保存 token
+
       wx.setStorageSync('token', res.data);
-      
+      console.log(res.data)
       // 保存用户信息
       wx.setStorageSync('userInfo', {
         nickname: this.data.nickname,

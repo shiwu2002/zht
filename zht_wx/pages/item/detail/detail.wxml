@@ -16,15 +16,15 @@
     </view>
     <view class="action-icons">
       <view class="action-icon" bindtap="onFavorite">
-        <text class="icon">{{isFavorite ? '❤️' : '🤍'}}</text>
+        <image class="icon-img" src="{{isFavorite ? '/images/other/shoucang_shixin.png' : '/images/other/shoucang.png'}}" mode="aspectFit"></image>
         <text class="count">{{detail.favoriteCount}}</text>
       </view>
       <view class="action-icon" bindtap="onShare">
-        <text class="icon">📤</text>
+        <image class="icon-img" src="/images/carouseChart/sousuo.png" mode="aspectFit"></image>
         <text class="count">分享</text>
       </view>
       <view class="action-icon" bindtap="onMessage">
-        <text class="icon">💬</text>
+        <image class="icon-img" src="/images/other/xiaoxi.png" mode="aspectFit"></image>
         <text class="count">留言</text>
       </view>
     </view>
@@ -35,11 +35,11 @@
     <text class="title">{{detail.title}}</text>
     <view class="meta-row">
       <view class="meta-item">
-        <text class="meta-icon">📍</text>
+        <image class="meta-icon-img" src="/images/classify/home.png" mode="aspectFit"></image>
         <text class="meta-text">{{detail.location}}</text>
       </view>
       <view class="meta-item">
-        <text class="meta-icon">🕐</text>
+        <image class="meta-icon-img" src="/images/classify/book.png" mode="aspectFit"></image>
         <text class="meta-text">{{detail.createTime}}</text>
       </view>
     </view>
@@ -88,11 +88,11 @@
   <!-- 底部操作栏 -->
   <view class="action-bar">
     <view class="bar-btn" bindtap="onFavorite">
-      <text class="btn-icon">{{isFavorite ? '❤️' : '🤍'}}</text>
+      <image class="btn-icon-img" src="{{isFavorite ? '/images/other/shoucang_shixin.png' : '/images/other/shoucang.png'}}" mode="aspectFit"></image>
       <text class="btn-text">{{isFavorite ? '已收藏' : '收藏'}}</text>
     </view>
     <view class="bar-btn" bindtap="onMessage">
-      <text class="btn-icon">💬</text>
+      <image class="btn-icon-img" src="/images/other/xiaoxi.png" mode="aspectFit"></image>
       <text class="btn-text">消息</text>
     </view>
     <button class="exchange-btn" bindtap="onExchange">发起交换</button>

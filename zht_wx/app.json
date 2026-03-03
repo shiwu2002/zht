@@ -32,26 +32,26 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home_active.png"
+        "iconPath": "images/tabBar/home.png",
+        "selectedIconPath": "images/tabBar/home.fill.png"
       },
       {
         "pagePath": "pages/category/category",
         "text": "分类",
-        "iconPath": "images/category.png",
-        "selectedIconPath": "images/category_active.png"
+        "iconPath": "images/other/fenlei.png",
+        "selectedIconPath": "images/other/fenlei.png"
       },
       {
         "pagePath": "pages/message/list",
         "text": "消息",
-        "iconPath": "images/message.png",
-        "selectedIconPath": "images/message_active.png"
+        "iconPath": "images/other/xiaoxi.png",
+        "selectedIconPath": "images/other/xiaoxi.png"
       },
       {
         "pagePath": "pages/user/user",
         "text": "我的",
-        "iconPath": "images/user.png",
-        "selectedIconPath": "images/user_active.png"
+        "iconPath": "images/tabBar/mine.png",
+        "selectedIconPath": "images/tabBar/mine.fill.png"
       }
     ]
   },

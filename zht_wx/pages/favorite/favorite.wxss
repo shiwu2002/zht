@@ -50,8 +50,16 @@
 }
 
 .item-meta {
+  display: flex;
+  align-items: center;
   font-size: 22rpx;
   color: #999999;
+}
+
+.location-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 6rpx;
 }
 
 .delete-btn {

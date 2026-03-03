@@ -3,7 +3,7 @@
   
   <!-- 用户头部 -->
   <view class="user-header" bindtap="toEdit">
-    <image class="avatar" src="{{userInfo.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+    <image class="avatar" src="{{userInfo.avatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
     <view class="user-info">
       <text class="nickname">{{userInfo.nickname || '点击登录'}}</text>
       <text class="credit">{{userInfo.creditScore || 0}}</text>
@@ -32,17 +32,17 @@
   <!-- 我的服务 -->
   <view class="menu-section">
     <view class="menu-item" bindtap="toMyItems">
-      <text class="menu-icon">📦</text>
+      <image class="menu-icon-img" src="/images/other/wodefabu.png" mode="aspectFit"></image>
       <text class="menu-text">我的发布</text>
       <text class="menu-arrow">></text>
     </view>
     <view class="menu-item" bindtap="toExchange">
-      <text class="menu-icon">🔄</text>
+      <image class="menu-icon-img" src="/images/other/jiaohuanjilu.png" mode="aspectFit"></image>
       <text class="menu-text">交换记录</text>
       <text class="menu-arrow">></text>
     </view>
     <view class="menu-item" bindtap="toFavorite">
-      <text class="menu-icon">⭐</text>
+      <image class="menu-icon-img" src="/images/other/shoucang.png" mode="aspectFit"></image>
       <text class="menu-text">我的收藏</text>
       <text class="menu-arrow">></text>
     </view>
@@ -51,18 +51,18 @@
   <!-- 消息与设置 -->
   <view class="menu-section">
     <view class="menu-item" bindtap="toMessage">
-      <text class="menu-icon">💬</text>
+      <image class="menu-icon-img" src="/images/other/xiaoxizhongxin.png" mode="aspectFit"></image>
       <text class="menu-text">消息中心</text>
       <text class="badge" wx:if="{{unreadCount > 0}}">{{unreadCount}}</text>
       <text class="menu-arrow">></text>
     </view>
     <view class="menu-item" bindtap="toAddress">
-      <text class="menu-icon">📍</text>
+      <image class="menu-icon-img" src="/images/other/phone.png" mode="aspectFit"></image>
       <text class="menu-text">收货地址</text>
       <text class="menu-arrow">></text>
     </view>
     <view class="menu-item" bindtap="toAbout">
-      <text class="menu-icon">ℹ️</text>
+      <image class="menu-icon-img" src="/images/other/guanyuwomen.png" mode="aspectFit"></image>
       <text class="menu-text">关于我们</text>
       <text class="menu-arrow">></text>
     </view>

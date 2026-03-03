@@ -8,7 +8,8 @@
         <text class="item-title">{{item.title}}</text>
         <text class="item-desc">{{item.description}}</text>
         <view class="item-meta">
-          <text class="item-location">📍 {{item.location}}</text>
+          <image class="location-icon" src="/images/add/jiaju.png" mode="aspectFit"></image>
+          <text class="item-location">{{item.location}}</text>
         </view>
       </view>
       <view class="delete-btn" catchtap="removeFavorite" data-id="{{item.id}}">✕</view>

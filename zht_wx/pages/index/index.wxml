@@ -4,7 +4,7 @@
   <!-- 顶部搜索栏 -->
   <view class="search-bar">
     <view class="search-input" bindtap="toSearch">
-      <image class="search-icon" src="/images/shouye/sousuo.png" mode="aspectFit"></image>
+      <image class="search-icon" src="/images/carouseChart/sousuo.png" mode="aspectFit"></image>
       <text class="placeholder">搜索闲置物品</text>
     </view>
     <view class="publish-btn" bindtap="toPublish">
@@ -23,33 +23,23 @@
   <view class="category-section card">
     <view class="category-grid">
       <view class="category-item" data-id="0" bindtap="onCategoryTap">
-        <view class="category-icon {{currentCategory === 0 ? 'active' : ''}}">
-          <text>📦</text>
-        </view>
+        <image class="category-icon-img {{currentCategory === 0 ? 'active' : ''}}" src="/images/classify/other.png" mode="aspectFit"></image>
         <text class="category-name {{currentCategory === 0 ? 'active' : ''}}">全部</text>
       </view>
       <view class="category-item" data-id="1" bindtap="onCategoryTap">
-        <view class="category-icon {{currentCategory === 1 ? 'active' : ''}}">
-          <text>📚</text>
-        </view>
+        <image class="category-icon-img {{currentCategory === 1 ? 'active' : ''}}" src="/images/classify/book.png" mode="aspectFit"></image>
         <text class="category-name {{currentCategory === 1 ? 'active' : ''}}">教材</text>
       </view>
       <view class="category-item" data-id="2" bindtap="onCategoryTap">
-        <view class="category-icon {{currentCategory === 2 ? 'active' : ''}}">
-          <text>💻</text>
-        </view>
+        <image class="category-icon-img {{currentCategory === 2 ? 'active' : ''}}" src="/images/classify/digital.png" mode="aspectFit"></image>
         <text class="category-name {{currentCategory === 2 ? 'active' : ''}}">数码</text>
       </view>
       <view class="category-item" data-id="3" bindtap="onCategoryTap">
-        <view class="category-icon {{currentCategory === 3 ? 'active' : ''}}">
-          <text>👕</text>
-        </view>
+        <image class="category-icon-img {{currentCategory === 3 ? 'active' : ''}}" src="/images/classify/clothes.png" mode="aspectFit"></image>
         <text class="category-name {{currentCategory === 3 ? 'active' : ''}}">服饰</text>
       </view>
       <view class="category-item" data-id="4" bindtap="onCategoryTap">
-        <view class="category-icon {{currentCategory === 4 ? 'active' : ''}}">
-          <text>🏠</text>
-        </view>
+        <image class="category-icon-img {{currentCategory === 4 ? 'active' : ''}}" src="/images/classify/home.png" mode="aspectFit"></image>
         <text class="category-name {{currentCategory === 4 ? 'active' : ''}}">生活</text>
       </view>
     </view>

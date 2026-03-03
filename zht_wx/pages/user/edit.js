@@ -18,7 +18,7 @@ Page({
     const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
     if (userInfo) {
       this.setData({
-        avatar: userInfo.avatar || '/images/default-avatar.png',
+        avatar: userInfo.avatar || '/images/login/morentouxiang.png',
         nickname: userInfo.nickname || '',
         phone: userInfo.phone || '',
         address: userInfo.address || '',
