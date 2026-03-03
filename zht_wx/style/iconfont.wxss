@@ -88,3 +88,9 @@
 .icon-food { }
 .icon-beauty { }
 .icon-other { }
+.icon-camera::before {
+  content: '\1f4f7'; /* 📷 */
+}
+.icon-edit::before {
+  content: '\270f'; /* ✏ */
+}

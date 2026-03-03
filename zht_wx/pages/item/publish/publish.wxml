@@ -98,12 +98,16 @@
   <view class="modal-mask" wx:if="{{showLocationPicker}}" catchtap="cancelManualLocation">
     <view class="modal-content" catchtap="">
       <view class="modal-header">
-        <text class="modal-title">输入位置信息</text>
-        <text class="modal-close" bindtap="cancelManualLocation">×</text>
+        <view class="header-left">
+          <image class="header-icon" src="/images/other/location.png" mode="aspectFit"></image>
+          <text class="modal-title">输入位置信息</text>
+        </view>
+        <image class="modal-close" src="/images/other/close.png" mode="aspectFit" bindtap="cancelManualLocation"></image>
       </view>
       
       <view class="modal-body">
-        <view class="location-input-row">
+        <view class="location-input-wrapper">
+          <image class="input-icon" src="/images/other/address.png" mode="aspectFit"></image>
           <input 
             class="location-input" 
             placeholder="请输入详细地址，如：北京市朝阳区 xx 路 xx 号" 
@@ -114,13 +118,17 @@
         </view>
         
         <view class="location-tips">
-          <text>提示：建议填写详细的地址信息，方便交易双方确认位置</text>
+          <image class="tip-icon" src="/images/other/tip.png" mode="aspectFit"></image>
+          <text>建议填写详细地址信息，方便交易双方确认位置</text>
         </view>
       </view>
       
       <view class="modal-footer">
+        <button class="modal-btn modal-btn-map" bindtap="chooseLocationOnMap">
+          <image class="btn-icon" src="/images/other/map.png" mode="aspectFit"></image>
+          <text>地图选点</text>
+        </button>
         <button class="modal-btn modal-btn-cancel" bindtap="cancelManualLocation">取消</button>
-        <button class="modal-btn modal-btn-map" bindtap="chooseLocationOnMap">📍 地图选点</button>
         <button class="modal-btn modal-btn-confirm" bindtap="confirmManualLocation">确定</button>
       </view>
     </view>

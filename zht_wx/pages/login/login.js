@@ -37,9 +37,13 @@ Page({
   // 选择头像
   onChooseAvatar(e) {
     const { avatarUrl } = e.detail;
-    this.setData({
-      avatar: avatarUrl
-    });
+    if (avatarUrl) {
+      this.setData({
+        avatar: avatarUrl
+      });
+    } else {
+      wx.showToast({ title: '选择头像失败', icon: 'none' });
+    }
   },
 
   // 选择默认头像

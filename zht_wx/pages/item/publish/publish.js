@@ -113,13 +113,15 @@ Page({
     wx.showModal({
       title: '选择位置',
       content: '请选择获取位置的方式',
-      confirmText: '自动获取',
-      cancelText: '手动输入',
+      confirmText: '地图选点',
+      cancelText: '自动获取',
       success: (res) => {
         if (res.confirm) {
-          this.autoGetLocation();
+          // 优先使用地图选点（更可靠）
+          this.chooseLocationOnMap();
         } else if (res.cancel) {
-          this.setData({ showLocationPicker: true });
+          // 自动获取作为备选
+          this.autoGetLocation();
         }
       }
     });
@@ -136,13 +138,32 @@ Page({
           longitude: res.longitude,
           latitude: res.latitude
         });
-        // 逆地理编码获取地址
-        this.reverseGeocoding(res.latitude, res.longitude);
+        wx.hideLoading();
+        // 提示用户进行下一步
+        wx.showModal({
+          title: '提示',
+          content: '已获取当前位置，是否需要在地图上选择精确位置？',
+          confirmText: '地图选点',
+          cancelText: '使用当前',
+          success: (res) => {
+            if (res.confirm) {
+              this.chooseLocationOnMap();
+            } else {
+              // 使用当前坐标，提示用户手动输入地址
+              this.setData({ showLocationPicker: true });
+              wx.showToast({ 
+                title: '请手动输入详细地址', 
+                icon: 'none',
+                duration: 2000
+              });
+            }
+          }
+        });
       },
       fail: (err) => {
         wx.hideLoading();
         console.error('获取位置失败', err);
-        // 自动获取失败，提示用户手动输入或地图选点
+        // 自动获取失败，提示用户地图选点
         wx.showModal({
           title: '提示',
           content: '自动获取位置失败，请在地图上选择位置',
@@ -155,9 +176,6 @@ Page({
             }
           }
         });
-      },
-      complete: () => {
-        wx.hideLoading();
       }
     });
   },
@@ -166,7 +184,24 @@ Page({
   reverseGeocoding(latitude, longitude) {
     // 注意：需要在腾讯地图开放平台申请 key
     // https://lbs.qq.com/dev/console/application/mine
-    const QQ_MAP_KEY = '您的腾讯地图 Key'; // 请替换为实际的 key
+    const QQ_MAP_KEY = 'P7ABZ-I5M6I-YQEGH-U7RDU-HUWE7-EAFWJ'; // 请替换为实际的 key
+    
+    // 如果没有配置有效的 Key，直接引导用户使用地图选点
+    if (QQ_MAP_KEY === '您的腾讯地图 Key' || QQ_MAP_KEY.length < 10) {
+      wx.showModal({
+        title: '提示',
+        content: '腾讯地图 Key 未配置，请在地图上选择位置',
+        showCancel: true,
+        confirmText: '地图选点',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            this.chooseLocationOnMap();
+          }
+        }
+      });
+      return;
+    }
     
     wx.showLoading({ title: '正在获取地址...', mask: true });
     
@@ -189,10 +224,10 @@ Page({
         } else {
           wx.hideLoading();
           console.error('逆地理编码失败:', res.data);
-          // 如果逆地理编码失败，提示用户手动输入
+          // 如果逆地理编码失败，引导用户使用地图选点
           wx.showModal({
             title: '提示',
-            content: '无法获取详细地址，请在地图上选择位置',
+            content: '无法获取详细地址 (错误码：' + res.data.status + ')，请在地图上选择位置',
             showCancel: true,
             confirmText: '地图选点',
             cancelText: '取消',
@@ -207,7 +242,7 @@ Page({
       fail: () => {
         wx.hideLoading();
         console.error('逆地理编码请求失败');
-        // 如果请求失败，提示用户手动输入
+        // 如果请求失败，引导用户使用地图选点
         wx.showModal({
           title: '提示',
           content: '无法获取详细地址，请在地图上选择位置',
@@ -257,8 +292,8 @@ Page({
     wx.chooseLocation({
       success: (res) => {
         console.log('地图选点成功:', res);
-        // 使用地图返回的详细地址
-        const fullAddress = res.address + ' ' + res.name;
+        // 使用地图返回的详细地址（已经包含完整地址信息）
+        const fullAddress = (res.address || '') + ' ' + (res.name || '');
         console.log('详细地址:', fullAddress);
         this.setData({
           location: fullAddress.trim(),

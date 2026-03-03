@@ -111,9 +111,25 @@ Page({
 
   // 跳转搜索
   toSearch() {
-    wx.navigateTo({
-      url: '/pages/item/search'
-    });
+    console.log('点击搜索按钮，准备跳转');
+    try {
+      console.log('目标路径：/pages/item/search/search');
+      wx.navigateTo({
+        url: '/pages/item/search/search',
+        success: () => {
+          console.log('跳转成功');
+        },
+        fail: (err) => {
+          console.error('跳转失败:', err);
+          wx.showToast({
+            title: '跳转失败',
+            icon: 'none'
+          });
+        }
+      });
+    } catch (error) {
+      console.error('跳转异常:', error);
+    }
   },
 
   // 跳转发布
