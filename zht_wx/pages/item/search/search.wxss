@@ -1,0 +1,132 @@
+/* pages/item/search.wxss */
+.container { 
+  padding: 20rpx; 
+  background: #f5f5f5; 
+  min-height: 100vh; 
+}
+
+/* 搜索框样式 */
+.search-bar {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 48rpx;
+  padding: 16rpx 24rpx;
+}
+
+.search-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  height: 48rpx;
+}
+
+/* 搜索历史样式 */
+.history-section {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.clear-btn {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.history-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.history-tag {
+  background: #f5f5f5;
+  border-radius: 24rpx;
+  padding: 12rpx 24rpx;
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+  color: #666666;
+}
+
+/* 搜索结果样式 */
+.item-list { 
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+}
+
+.item-card { 
+  width: 48%; 
+  background: #ffffff; 
+  border-radius: 16rpx; 
+  overflow: hidden; 
+  margin-bottom: 20rpx; 
+}
+
+.item-image { 
+  width: 100%; 
+  height: 360rpx; 
+}
+
+.item-info { 
+  padding: 20rpx; 
+}
+
+.item-title { 
+  font-size: 28rpx; 
+  font-weight: bold; 
+  display: block; 
+  margin-bottom: 10rpx; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+}
+
+.item-desc { 
+  font-size: 24rpx; 
+  color: #999999; 
+  display: block; 
+  margin-bottom: 16rpx; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+}
+
+.item-meta { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 22rpx; 
+  color: #999999; 
+}
+
+.empty, .load-more { 
+  text-align: center; 
+  padding: 30rpx; 
+  color: #999999; 
+  font-size: 24rpx; 
+}

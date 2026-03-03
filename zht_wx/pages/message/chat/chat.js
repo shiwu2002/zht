@@ -1,5 +1,5 @@
 // pages/message/chat.js
-const { messageApi } = require('../../utils/api');
+const { messageApi } = require('../../../utils/api');
 const app = getApp();
 
 Page({

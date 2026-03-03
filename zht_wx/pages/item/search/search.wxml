@@ -1,0 +1,55 @@
+<!--pages/item/search.wxml-->
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        type="text" 
+        placeholder="搜索物品" 
+        value="{{keyword}}"
+        bindinput="onSearch"
+        confirm-type="search"
+        bindconfirm="onSearch"/>
+    </view>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="history-section" wx:if="{{!keyword && searchHistory.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">搜索历史</text>
+      <text class="clear-btn" bindtap="clearHistory">清除</text>
+    </view>
+    <view class="history-tags">
+      <view 
+        class="history-tag" 
+        wx:for="{{searchHistory}}" 
+        wx:key="*this"
+        data-keyword="{{item}}"
+        bindtap="useHistoryKeyword">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="result-section" wx:if="{{keyword}}">
+    <view class="item-list">
+      <view class="item-card" wx:for="{{itemList}}" wx:key="id" data-id="{{item.id}}" bindtap="toDetail">
+        <image class="item-image" src="{{item.images[0]}}" mode="aspectFill"></image>
+        <view class="item-info">
+          <text class="item-title">{{item.title}}</text>
+          <text class="item-desc">{{item.description}}</text>
+          <view class="item-meta">
+            <text>📍 {{item.location}}</text>
+            <text>❤️ {{item.favoriteCount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty" wx:if="{{itemList.length === 0 && !loading}}">暂无搜索结果</view>
+    <view class="load-more" wx:if="{{loading}}">加载中...</view>
+  </view>
+</view>

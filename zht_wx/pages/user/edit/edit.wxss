@@ -1,0 +1,94 @@
+/* pages/user/edit.wxss */
+.container {
+  padding: 20rpx;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.avatar-section {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.update-tip {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.form {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #333333;
+  width: 140rpx;
+}
+
+.input, .picker {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333333;
+  text-align: right;
+}
+
+.picker {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.phone-row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.phone {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.bind-btn {
+  padding: 8rpx 24rpx;
+  font-size: 24rpx;
+  background: #07c160;
+  color: #ffffff;
+  border-radius: 8rpx;
+}
+
+.save-btn {
+  background: #07c160;
+  color: #ffffff;
+  font-size: 32rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  margin-top: 20rpx;
+}

@@ -1,0 +1,116 @@
+<!--pages/item/edit.wxml-->
+<view class="container">
+  <view class="form-section">
+    <!-- 图片上传 -->
+    <view class="form-item">
+      <text class="label">物品图片</text>
+      <view class="image-list">
+        <view 
+          class="image-item" 
+          wx:for="{{images}}" 
+          wx:key="*this">
+          <image class="image" src="{{item}}" mode="aspectFill"></image>
+          <text 
+            class="delete-btn" 
+            data-index="{{index}}" 
+            bindtap="deleteImage">×</text>
+        </view>
+        <view 
+          class="upload-btn" 
+          wx:if="{{images.length < 9}}"
+          bindtap="chooseImage">
+          <text class="add-icon">+</text>
+          <text class="upload-text">上传图片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 标题 -->
+    <view class="form-item">
+      <text class="label">标题 <text class="required">*</text></text>
+      <input 
+        class="input" 
+        type="text" 
+        placeholder="请输入标题" 
+        value="{{title}}"
+        maxlength="50"
+        bindinput="onTitleInput"/>
+    </view>
+
+    <!-- 描述 -->
+    <view class="form-item">
+      <text class="label">描述 <text class="required">*</text></text>
+      <textarea 
+        class="textarea" 
+        placeholder="请输入详细描述" 
+        value="{{description}}"
+        maxlength="500"
+        bindinput="onDescInput"/>
+    </view>
+
+    <!-- 分类 -->
+    <view class="form-item">
+      <text class="label">分类 <text class="required">*</text></text>
+      <picker 
+        class="picker" 
+        range="{{categories}}" 
+        range-key="name"
+        value="{{categoryId}}"
+        bindchange="onCategoryChange">
+        <view class="picker-value">
+          {{categoryId ? categories.find(c => c.id === categoryId).name : '请选择分类'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 交换方式 -->
+    <view class="form-item">
+      <text class="label">交换方式</text>
+      <picker 
+        class="picker" 
+        range="{{exchangeTypes}}"
+        value="{{exchangeType}}"
+        bindchange="onExchangeTypeChange">
+        <view class="picker-value">
+          {{exchangeTypes[exchangeType]}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 价格 -->
+    <view class="form-item">
+      <text class="label">价格</text>
+      <input 
+        class="input" 
+        type="digit" 
+        placeholder="可选，填写价格" 
+        value="{{price}}"
+        bindinput="onPriceInput"/>
+    </view>
+
+    <!-- 交换条件 -->
+    <view class="form-item">
+      <text class="label">期望换什么</text>
+      <textarea 
+        class="textarea" 
+        placeholder="描述你希望换取的物品" 
+        value="{{exchangeCondition}}"
+        maxlength="200"
+        bindinput="onConditionInput"/>
+    </view>
+
+    <!-- 位置 -->
+    <view class="form-item">
+      <text class="label">所在位置 <text class="required">*</text></text>
+      <view class="location-wrapper" bindtap="chooseLocation">
+        <text class="location-text">{{location || '点击选择位置'}}</text>
+        <text class="arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <button class="submit-btn" bindtap="onSubmit" loading="{{uploading}}">
+    {{id ? '保存修改' : '发布物品'}}
+  </button>
+</view>

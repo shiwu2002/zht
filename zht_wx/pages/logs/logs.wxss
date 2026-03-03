@@ -1,0 +1,22 @@
+/* pages/logs/logs.wxss */
+.container {
+  padding: 20rpx;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.log-item {
+  background: #ffffff;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.empty {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999999;
+  font-size: 28rpx;
+}
