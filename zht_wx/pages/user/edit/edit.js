@@ -1,5 +1,5 @@
 // pages/user/edit.js
-const { userApi, fileApi } = require('../../utils/api');
+const { userApi, fileApi } = require('../../../utils/api');
 const app = getApp();
 
 Page({

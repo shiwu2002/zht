@@ -1,5 +1,5 @@
 // pages/message/list.js
-const { messageApi } = require('../../utils/api');
+const { messageApi } = require('../../../utils/api');
 
 Page({
   data: {

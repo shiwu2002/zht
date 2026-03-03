@@ -1,5 +1,5 @@
 // pages/exchange/create.js
-const { exchangeApi, itemApi } = require('../../utils/api');
+const { exchangeApi, itemApi } = require('../../../utils/api');
 
 Page({
   data: {

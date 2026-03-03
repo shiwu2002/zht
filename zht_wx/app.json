@@ -2,22 +2,22 @@
   "pages": [
     "pages/login/login",
     "pages/index/index",
-    "pages/item/list",
-    "pages/item/detail",
-    "pages/item/publish",
-    "pages/item/my",
-    "pages/item/edit",
-    "pages/item/select",
-    "pages/item/search",
+    "pages/item/list/list",
+    "pages/item/detail/detail",
+    "pages/item/publish/publish",
+    "pages/item/my/my",
+    "pages/item/edit/edit",
+    "pages/item/select/select",
+    "pages/item/search/search",
     "pages/category/category",
-    "pages/exchange/list",
-    "pages/exchange/detail",
-    "pages/exchange/create",
-    "pages/message/list",
-    "pages/message/chat",
+    "pages/exchange/list/list",
+    "pages/exchange/detail/detail",
+    "pages/exchange/create/create",
+    "pages/message/list/list",
+    "pages/message/chat/chat",
     "pages/favorite/favorite",
-    "pages/user/user",
-    "pages/user/edit",
+    "pages/user/user/user",
+    "pages/user/edit/edit",
     "pages/logs/logs"
   ],
   "window": {
@@ -45,13 +45,13 @@
         "selectedIconPath": "images/other/fenlei.png"
       },
       {
-        "pagePath": "pages/message/list",
+        "pagePath": "pages/message/list/list",
         "text": "消息",
         "iconPath": "images/other/xiaoxi.png",
         "selectedIconPath": "images/other/xiaoxi.png"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/user/user/user",
         "text": "我的",
         "iconPath": "images/tabBar/mine.png",
         "selectedIconPath": "images/tabBar/mine.fill.png"

@@ -127,7 +127,7 @@ Page({
   toDetail(e) {
     const itemId = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: `/pages/item/detail?id=${itemId}`
+      url: `/pages/item/detail/detail?id=${itemId}`
     });
   },
 

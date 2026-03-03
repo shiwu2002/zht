@@ -1,5 +1,5 @@
 // pages/user/user.js
-const { userApi } = require('../../utils/api');
+const { userApi } = require('../../../utils/api');
 const app = getApp();
 
 Page({

@@ -82,7 +82,7 @@ Page({
     const categoryName = e.currentTarget.dataset.name;
     
     wx.navigateTo({
-      url: `/pages/item/list?categoryId=${categoryId}&categoryName=${categoryName}`
+      url: `/pages/item/list/list?categoryId=${categoryId}&categoryName=${categoryName}`
     });
   }
 });

@@ -1,5 +1,5 @@
 // pages/item/list.js
-const { itemApi } = require('../../utils/api');
+const { itemApi } = require('../../../utils/api');
 
 Page({
   data: {
@@ -56,6 +56,6 @@ Page({
 
   toDetail(e) {
     const itemId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/item/detail?id=${itemId}` });
+    wx.navigateTo({ url: `/pages/item/detail/detail?id=${itemId}` });
   }
 });

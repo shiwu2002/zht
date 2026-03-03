@@ -58,7 +58,7 @@
         value="{{categoryId}}"
         bindchange="onCategoryChange">
         <view class="picker-value">
-          {{categoryId ? categories.find(c => c.id === categoryId).name : '请选择分类'}}
+          {{categoryName ? categoryName : '请选择分类'}}
         </view>
       </picker>
     </view>

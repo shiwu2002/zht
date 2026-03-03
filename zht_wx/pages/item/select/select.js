@@ -1,5 +1,5 @@
 // pages/item/select.js
-const { itemApi } = require('../../utils/api');
+const { itemApi } = require('../../../utils/api');
 const app = getApp();
 
 Page({

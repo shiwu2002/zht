@@ -1,5 +1,5 @@
 // pages/item/publish.js
-const { itemApi, categoryApi, fileApi } = require('../../utils/api');
+const { itemApi, categoryApi, fileApi } = require('../../../utils/api');
 
 Page({
   data: {

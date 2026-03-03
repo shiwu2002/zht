@@ -1,5 +1,5 @@
 // pages/item/edit.js
-const { itemApi, fileApi, categoryApi } = require('../../utils/api');
+const { itemApi, fileApi, categoryApi } = require('../../../utils/api');
 
 Page({
   data: {
@@ -16,7 +16,8 @@ Page({
     location: '',
     longitude: 0,
     latitude: 0,
-    uploading: false
+    uploading: false,
+    categoryName: '' // 选中的分类名称
   },
 
   onLoad(options) {
@@ -31,11 +32,18 @@ Page({
     try {
       const res = await itemApi.getDetail(this.data.id);
       const item = res.data;
+      // 先加载分类，再查找对应的分类名称
+      const categoriesRes = await categoryApi.getList();
+      const categories = categoriesRes.data || [];
+      const category = categories.find(c => c.id === item.categoryId);
+      
       this.setData({
         title: item.title,
         description: item.description,
         images: item.images || [],
         categoryId: item.categoryId,
+        categoryName: category ? category.name : '',
+        categories: categories,
         exchangeType: item.exchangeType || 1,
         price: item.price ? String(item.price) : '',
         exchangeCondition: item.exchangeCondition || '',
@@ -52,7 +60,19 @@ Page({
   async loadCategories() {
     try {
       const res = await categoryApi.getList();
-      this.setData({ categories: res.data || [] });
+      const categories = res.data || [];
+      // 如果已有 categoryId，查找对应的分类名称
+      let categoryName = '';
+      if (this.data.categoryId) {
+        const category = categories.find(c => c.id === this.data.categoryId);
+        if (category) {
+          categoryName = category.name;
+        }
+      }
+      this.setData({ 
+        categories,
+        categoryName
+      });
     } catch (err) {
       console.error('加载分类失败', err);
     }
@@ -111,7 +131,12 @@ Page({
 
   // 分类选择
   onCategoryChange(e) {
-    this.setData({ categoryId: parseInt(e.detail.value) });
+    const index = parseInt(e.detail.value);
+    const category = this.data.categories[index];
+    this.setData({ 
+      categoryId: category.id,
+      categoryName: category.name
+    });
   },
 
   // 交换方式选择

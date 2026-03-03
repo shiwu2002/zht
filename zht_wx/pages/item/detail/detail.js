@@ -1,5 +1,5 @@
 // pages/item/detail.js
-const { itemApi, favoriteApi, messageApi } = require('../../utils/api');
+const { itemApi, favoriteApi, messageApi } = require('../../../utils/api');
 
 Page({
   data: {
