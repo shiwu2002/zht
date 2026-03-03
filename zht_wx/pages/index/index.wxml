@@ -1,37 +1,83 @@
 <!--pages/index/index.wxml-->
 <view class="container">
-  <!-- 搜索栏 -->
+  
+  <!-- 顶部搜索栏 -->
   <view class="search-bar">
     <view class="search-input" bindtap="toSearch">
-      <text class="iconfont">🔍</text>
-      <text class="placeholder">搜索物品</text>
+      <image class="search-icon" src="/images/shouye/sousuo.png" mode="aspectFit"></image>
+      <text class="placeholder">搜索闲置物品</text>
     </view>
     <view class="publish-btn" bindtap="toPublish">
       <text>+</text>
     </view>
   </view>
 
+  <!-- 轮播图 -->
+  <swiper class="banner-swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" duration="{{500}}">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image class="banner-image" src="{{item.image}}" mode="aspectFill" bindtap="onBannerTap" data-url="{{item.url}}"></image>
+    </swiper-item>
+  </swiper>
+
   <!-- 分类导航 -->
-  <view class="category-nav">
-    <view class="category-item {{currentCategory === 0 ? 'active' : ''}}" 
-          data-id="0" bindtap="onCategoryTap">
-      <text>全部</text>
+  <view class="category-section card">
+    <view class="category-grid">
+      <view class="category-item" data-id="0" bindtap="onCategoryTap">
+        <view class="category-icon {{currentCategory === 0 ? 'active' : ''}}">
+          <text>📦</text>
+        </view>
+        <text class="category-name {{currentCategory === 0 ? 'active' : ''}}">全部</text>
+      </view>
+      <view class="category-item" data-id="1" bindtap="onCategoryTap">
+        <view class="category-icon {{currentCategory === 1 ? 'active' : ''}}">
+          <text>📚</text>
+        </view>
+        <text class="category-name {{currentCategory === 1 ? 'active' : ''}}">教材</text>
+      </view>
+      <view class="category-item" data-id="2" bindtap="onCategoryTap">
+        <view class="category-icon {{currentCategory === 2 ? 'active' : ''}}">
+          <text>💻</text>
+        </view>
+        <text class="category-name {{currentCategory === 2 ? 'active' : ''}}">数码</text>
+      </view>
+      <view class="category-item" data-id="3" bindtap="onCategoryTap">
+        <view class="category-icon {{currentCategory === 3 ? 'active' : ''}}">
+          <text>👕</text>
+        </view>
+        <text class="category-name {{currentCategory === 3 ? 'active' : ''}}">服饰</text>
+      </view>
+      <view class="category-item" data-id="4" bindtap="onCategoryTap">
+        <view class="category-icon {{currentCategory === 4 ? 'active' : ''}}">
+          <text>🏠</text>
+        </view>
+        <text class="category-name {{currentCategory === 4 ? 'active' : ''}}">生活</text>
+      </view>
     </view>
-    <view class="category-item {{currentCategory === item.id ? 'active' : ''}}" 
-          wx:for="{{categories}}" wx:key="id"
-          data-id="{{item.id}}" bindtap="onCategoryTap">
-      <text>{{item.name}}</text>
+  </view>
+
+  <!-- 推荐标题 -->
+  <view class="section-header">
+    <view class="header-left">
+      <view class="header-line"></view>
+      <text class="header-title">热门推荐</text>
+    </view>
+    <view class="header-more" bindtap="showMore">
+      <text>更多</text>
+      <text class="arrow">›</text>
     </view>
   </view>
 
   <!-- 物品列表 -->
   <view class="item-list">
-    <view class="item-card" wx:for="{{itemList}}" wx:key="id" 
+    <view class="item-card card" wx:for="{{itemList}}" wx:key="id" 
           data-id="{{item.id}}" bindtap="toDetail">
       <image class="item-image" src="{{item.images[0]}}" mode="aspectFill"></image>
       <view class="item-info">
         <text class="item-title">{{item.title}}</text>
-        <text class="item-desc">{{item.description}}</text>
+        <view class="item-price-row">
+          <text class="item-price">¥ {{item.price}}</text>
+          <text class="item-exchange-type" wx:if="{{item.exchangeType === 1}}">可交换</text>
+        </view>
         <view class="item-meta">
           <text class="item-location">📍 {{item.location}}</text>
           <text class="item-favorite">❤️ {{item.favoriteCount}}</text>
@@ -41,6 +87,16 @@
   </view>
 
   <!-- 加载更多 -->
-  <view class="load-more" wx:if="{{loading}}">加载中...</view>
-  <view class="no-more" wx:if="{{!hasMore && itemList.length > 0}}">没有更多了</view>
+  <view class="load-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+  <view class="no-more" wx:if="{{!hasMore && itemList.length > 0}}">
+    <text>— 没有更多了 —</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && itemList.length === 0}}">
+    <text>暂无物品</text>
+  </view>
+
 </view>

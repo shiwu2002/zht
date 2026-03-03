@@ -9,7 +9,13 @@ Page({
     loading: false,
     hasMore: true,
     current: 1,
-    size: 10
+    size: 10,
+    // 轮播图数据
+    banners: [
+      { id: 1, image: 'https://picsum.photos/800/400?random=1', url: '' },
+      { id: 2, image: 'https://picsum.photos/800/400?random=2', url: '' },
+      { id: 3, image: 'https://picsum.photos/800/400?random=3', url: '' }
+    ]
   },
 
   onLoad() {
@@ -122,6 +128,22 @@ Page({
     const itemId = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: `/pages/item/detail?id=${itemId}`
+    });
+  },
+
+  // 轮播图点击
+  onBannerTap(e) {
+    const url = e.currentTarget.dataset.url;
+    if (url) {
+      wx.navigateTo({ url });
+    }
+  },
+
+  // 显示更多
+  showMore() {
+    wx.showToast({
+      title: '更多功能开发中',
+      icon: 'none'
     });
   }
 });

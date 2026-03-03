@@ -1,69 +1,95 @@
-<!--pages/item/publish.wxml-->
+<!--pages/item/publish/publish.wxml-->
 <view class="container">
-  <view class="form">
-    <!-- 图片上传 -->
-    <view class="form-item">
-      <text class="label">物品图片</text>
-      <view class="image-uploader">
-        <view class="image-item" wx:for="{{images}}" wx:key="*this">
-          <image class="image" src="{{item}}" mode="aspectFill"></image>
-          <view class="delete-btn" catchtap="deleteImage" data-index="{{index}}">×</view>
-        </view>
-        <view class="upload-btn" bindtap="uploadImage" wx:if="{{images.length < 9}}">
-          <text>+</text>
-        </view>
+  
+  <!-- 图片上传 -->
+  <view class="form-section">
+    <view class="form-section-title">物品图片</view>
+    <view class="image-uploader">
+      <view class="image-item" wx:for="{{images}}" wx:key="*this">
+        <image class="image" src="{{item}}" mode="aspectFill"></image>
+        <view class="delete-btn" catchtap="deleteImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="upload-btn" bindtap="uploadImage" wx:if="{{images.length < 9}}">
+        <text>+</text>
       </view>
     </view>
+    <view class="upload-hint">最多可上传 9 张图片</view>
+  </view>
 
-    <!-- 标题 -->
+  <!-- 基本信息 -->
+  <view class="form-section">
+    <view class="form-section-title">基本信息</view>
+    
     <view class="form-item">
-      <text class="label">标题</text>
-      <input class="input" placeholder="请输入标题" value="{{title}}" bindinput="onTitleInput" maxlength="50" />
+      <text class="label required">标题</text>
+      <input class="input" placeholder="请输入标题，如：99 新 iPhone 13" 
+             value="{{title}}" bindinput="onTitleInput" maxlength="50" />
     </view>
 
-    <!-- 分类 -->
     <view class="form-item">
-      <text class="label">分类</text>
-      <picker mode="selector" range="{{categories}}" range-key="name" value="{{categoryIndex}}" bindchange="onCategoryChange">
-        <view class="picker">{{categories[categoryIndex] ? categories[categoryIndex].name : '请选择分类'}}</view>
+      <text class="label required">分类</text>
+      <picker mode="selector" range="{{categories}}" range-key="name" 
+              value="{{categoryIndex}}" bindchange="onCategoryChange">
+        <view class="picker">
+          {{categories[categoryIndex] ? categories[categoryIndex].name : '请选择分类'}}
+        </view>
       </picker>
     </view>
 
-    <!-- 描述 -->
     <view class="form-item">
-      <text class="label">描述</text>
-      <textarea class="textarea" placeholder="请详细描述物品" value="{{description}}" bindinput="onDescInput" maxlength="500" />
+      <text class="label required">描述</text>
+      <textarea class="textarea" placeholder="请详细描述物品的品牌、型号、新旧程度、使用情况等" 
+                value="{{description}}" bindinput="onDescInput" maxlength="500" />
+      <view class="hint">{{description.length}}/500</view>
     </view>
+  </view>
 
-    <!-- 交换方式 -->
+  <!-- 交易信息 -->
+  <view class="form-section">
+    <view class="form-section-title">交易信息</view>
+    
     <view class="form-item">
-      <text class="label">交换方式</text>
-      <picker mode="selector" range="{{exchangeTypes}}" value="{{exchangeIndex}}" bindchange="onExchangeChange">
+      <text class="label required">交换方式</text>
+      <picker mode="selector" range="{{exchangeTypes}}" 
+              value="{{exchangeIndex}}" bindchange="onExchangeChange">
         <view class="picker">{{exchangeTypes[exchangeIndex]}}</view>
       </picker>
     </view>
 
-    <!-- 价格 -->
     <view class="form-item">
       <text class="label">估价 (元)</text>
-      <input class="input" type="digit" placeholder="请输入估价" value="{{price}}" bindinput="onPriceInput" />
+      <input class="input" type="digit" placeholder="请输入心理估价，0 表示仅交换" 
+             value="{{price}}" bindinput="onPriceInput" />
     </view>
+  </view>
 
-    <!-- 位置 -->
+  <!-- 位置信息 -->
+  <view class="form-section">
+    <view class="form-section-title">位置信息</view>
+    
     <view class="form-item">
-      <text class="label">位置</text>
+      <text class="label required">取货位置</text>
       <view class="location-row" bindtap="getLocation">
-        <text class="location-text">{{location || '点击获取位置'}}</text>
+        <text class="location-text {{location ? 'has-value' : ''}}">
+          {{location || '点击获取位置'}}
+        </text>
         <text class="arrow">></text>
       </view>
     </view>
 
-    <!-- 标签 -->
     <view class="form-item">
       <text class="label">标签</text>
-      <input class="input" placeholder="多个标签用逗号分隔" value="{{tags}}" bindinput="onTagsInput" />
+      <input class="input" placeholder="多个标签用逗号分隔，如：99 新，包邮，可小刀" 
+             value="{{tags}}" bindinput="onTagsInput" />
+      <view class="hint">添加标签可以让物品更容易被搜索到</view>
     </view>
-
-    <button class="submit-btn" bindtap="onSubmit" loading="{{loading}}">发布</button>
   </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-wrapper">
+    <button class="submit-btn" bindtap="onSubmit" loading="{{loading}}">
+      {{loading ? '发布中...' : '立即发布'}}
+    </button>
+  </view>
+
 </view>
