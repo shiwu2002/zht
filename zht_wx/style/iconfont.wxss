@@ -1,0 +1,90 @@
+/**
+ * IconFont 图标样式
+ * 
+ * 使用方法：
+ * 1. 访问 https://www.iconfont.cn
+ * 2. 搜索需要的图标（如：书本、数码、衣服等）
+ * 3. 将图标添加到购物车
+ * 4. 创建项目并将图标加入项目
+ * 5. 下载 Font 资源包
+ * 6. 将以下文件复制到项目：
+ *    - iconfont.ttf
+ *    - iconfont.woff
+ *    - iconfont.woff2
+ * 7. 复制 iconfont.css 内容并更新下面的 Unicode 编码
+ * 
+ * 或者使用在线链接：
+ * 在项目设置中获取在线 CDN 链接，在 app.wxss 中引入
+ */
+
+/* 如果使用了 iconfont 字体文件，取消下面的注释并放置字体文件到 fonts/ 目录 */
+/*
+@font-face {
+  font-family: 'iconfont';
+  src: url('/fonts/iconfont.woff2?t=xxx') format('woff2'),
+       url('/fonts/iconfont.woff?t=xxx') format('woff'),
+       url('/fonts/iconfont.ttf?t=xxx') format('truetype');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 48rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 下面是常用图标的 Unicode 编码示例（需要从 iconfont 项目获取实际的 Unicode）
+// 书本图标
+.icon-book::before {
+  content: '\e62d';
+}
+
+// 手机/数码图标
+.icon-digital::before {
+  content: '\e652';
+}
+
+// 衣服图标
+.icon-clothes::before {
+  content: '\e609';
+}
+
+// 生活用品图标
+.icon-life::before {
+  content: '\e636';
+}
+
+// 运动图标
+.icon-sport::before {
+  content: '\e645';
+}
+
+// 美食图标
+.icon-food::before {
+  content: '\e618';
+}
+
+// 美妆图标
+.icon-beauty::before {
+  content: '\e601';
+}
+
+// 其他图标
+.icon-other::before {
+  content: '\e644';
+}
+*/
+
+/* 
+  临时方案：使用 emoji 作为图标
+  等从 iconfont 下载字体文件后替换
+*/
+.icon-book { }
+.icon-digital { }
+.icon-clothes { }
+.icon-life { }
+.icon-sport { }
+.icon-food { }
+.icon-beauty { }
+.icon-other { }
