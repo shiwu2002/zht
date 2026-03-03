@@ -95,7 +95,7 @@
       <image class="btn-icon-img" src="/images/other/xiaoxi.png" mode="aspectFit"></image>
       <text class="btn-text">消息</text>
     </view>
-    <button class="exchange-btn" bindtap="onExchange">发起交换</button>
+    <button class="exchange-btn" bindtap="onExchange" wx:if="{{!isOwner}}">发起交换</button>
   </view>
 
 </view>

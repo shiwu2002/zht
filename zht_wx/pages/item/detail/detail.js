@@ -6,7 +6,8 @@ Page({
     id: 0,
     detail: null,
     isFavorite: false,
-    exchangeTypes: ['未知', '面对面交换', '邮寄交换', '均可']
+    exchangeTypes: ['未知', '面对面交换', '邮寄交换', '均可'],
+    isOwner: false // 是否为物品发布者
   },
 
   onLoad(options) {
@@ -18,8 +19,16 @@ Page({
   async loadDetail() {
     try {
       const res = await itemApi.getDetail(this.data.id);
+      const detail = res.data;
+      
+      // 获取当前用户信息，判断是否为物品发布者
+      const app = getApp();
+      const currentUserId = app.globalData.userInfo?.id;
+      const isOwner = currentUserId && currentUserId === detail.userId;
+      
       this.setData({
-        detail: res.data
+        detail,
+        isOwner
       });
       this.checkFavorite();
     } catch (err) {
