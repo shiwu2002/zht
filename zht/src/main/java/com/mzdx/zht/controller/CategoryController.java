@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Tag(name = "分类管理")
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/category")
 @RequiredArgsConstructor
 public class CategoryController {
     

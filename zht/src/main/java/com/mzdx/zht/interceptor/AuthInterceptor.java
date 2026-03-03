@@ -16,7 +16,10 @@ public class AuthInterceptor implements HandlerInterceptor {
     
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if ("OPTIONS".equals(request.getMethod())) {
+        String requestURI = request.getRequestURI();
+        
+        // 放行登录接口和 OPTIONS 请求
+        if ("/api/user/login".equals(requestURI) || "OPTIONS".equals(request.getMethod())) {
             return true;
         }
         

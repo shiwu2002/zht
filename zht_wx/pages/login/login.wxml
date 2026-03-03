@@ -1,49 +1,71 @@
-<view class="container">
-  <view class="logo">
-    <image class="logo-img" src="/images/logo.png" mode="aspectFit"></image>
-    <text class="logo-text">置换通</text>
+<!--pages/login/login.wxml-->
+<view class="login-container">
+  <view class="login-header">
+    <text class="title">欢迎加入</text>
+    <text class="subtitle">设置您的个人信息</text>
   </view>
 
-  <view class="form">
-    <view class="form-item avatar-section">
-      <view class="avatar-wrapper" wx:if="{{avatar}}">
-        <image class="avatar" src="{{avatar}}" mode="aspectFill"></image>
-        <text class="nickname">{{nickname || '微信用户'}}</text>
+  <view class="login-form">
+    <!-- 头像选择 -->
+    <view class="form-item">
+      <text class="label">头像</text>
+      <view class="avatar-section">
+        <button open-type="chooseAvatar" class="avatar-button" hover-class="none">
+          <image 
+            wx:if="{{avatar}}" 
+            src="{{avatar}}" 
+            class="avatar-preview"
+          />
+          <view wx:else class="avatar-placeholder">
+            <text class="iconfont">&#xe603;</text>
+            <text>选择头像</text>
+          </view>
+        </button>
+        
+        <!-- 默认头像列表 -->
+        <view class="default-avatars">
+          <text class="tips">或选择默认头像：</text>
+          <view class="avatar-list">
+            <image 
+              wx:for="{{defaultAvatars}}" 
+              wx:key="*this"
+              src="{{item}}" 
+              class="default-avatar {{avatar === item ? 'selected' : ''}}"
+              data-avatar="{{item}}"
+              bindtap="onSelectDefaultAvatar"
+            />
+          </view>
+        </view>
       </view>
-      <button class="avatar-btn" wx:else open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" hover-class="btn-hover">
-        <text>点击设置头像和昵称</text>
-      </button>
     </view>
-    
+
+    <!-- 昵称输入 -->
     <view class="form-item">
-      <input class="input" type="text" placeholder="请输入昵称" value="{{nickname}}" bindinput="onNicknameInput" />
+      <text class="label">昵称</text>
+      <view class="nickname-section">
+        <view wx:if="{{!isEditingNickname}}" class="nickname-display" bindtap="onEditNickname">
+          <text wx:if="{{nickname}}">{{nickname}}</text>
+          <text wx:else class="placeholder">点击输入昵称</text>
+          <text class="edit-icon">✏️</text>
+        </view>
+        <input 
+          wx:else 
+          type="nickname" 
+          class="nickname-input" 
+          placeholder="请输入昵称"
+          value="{{nickname}}"
+          bindinput="onNicknameInput"
+          bindblur="onConfirmNickname"
+          confirm-type="done"
+          bindconfirm="onConfirmNickname"
+          focus="{{isEditingNickname}}"
+        />
+      </view>
     </view>
-    
-    <view class="form-item">
-      <button class="phone-btn" type="default" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" hover-class="btn-hover">
-        <text wx:if="{{phone}}">已获取手机号：{{phone}}</text>
-        <text wx:else>可选：获取手机号</text>
-      </button>
-    </view>
-  </view>
 
-  <view class="agree">
-    <label class="agree-label">
-      <checkbox class="agree-checkbox" checked="{{agree}}" bindchange="onAgreeChange" color="#07c160" />
-      <text>我已阅读并同意</text>
-      <text class="link" bindtap="showAgreement">《用户协议》</text>
-    </label>
-  </view>
-
-  <button class="login-btn" type="primary" bindtap="onLogin" loading="{{loading}}" disabled="{{!canLogin}}" hover-class="btn-hover">
-    <text wx:if="{{!loading}}">授权登录</text>
-    <text wx:else>登录中...</text>
-  </button>
-
-  <view class="tips">
-    <text>登录即代表您同意</text>
-    <text class="link" bindtap="showAgreement">《用户协议》</text>
-    <text>和</text>
-    <text class="link" bindtap="showAgreement">《隐私政策》</text>
+    <!-- 完成按钮 -->
+    <button class="submit-button" bindtap="onComplete" loading="{{isLoading}}">
+      完成设置并登录
+    </button>
   </view>
 </view>

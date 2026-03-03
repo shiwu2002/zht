@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "举报管理")
 @RestController
-@RequestMapping("/api/report")
+@RequestMapping("/report")
 @RequiredArgsConstructor
 public class ReportController {
     

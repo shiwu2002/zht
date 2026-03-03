@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Tag(name = "文件管理")
 @RestController
-@RequestMapping("/api/file")
+@RequestMapping("/file")
 @RequiredArgsConstructor
 public class FileController {
     

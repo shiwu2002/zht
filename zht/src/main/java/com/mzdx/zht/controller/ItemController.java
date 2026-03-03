@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Tag(name = "物品管理")
 @RestController
-@RequestMapping("/api/item")
+@RequestMapping("/item")
 @RequiredArgsConstructor
 public class ItemController {
     

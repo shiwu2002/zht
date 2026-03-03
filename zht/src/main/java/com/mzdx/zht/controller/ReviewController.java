@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "评价管理")
 @RestController
-@RequestMapping("/api/review")
+@RequestMapping("/review")
 @RequiredArgsConstructor
 public class ReviewController {
     

@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Tag(name = "消息管理")
 @RestController
-@RequestMapping("/api/message")
+@RequestMapping("/message")
 @RequiredArgsConstructor
 public class MessageController {
     

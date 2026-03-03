@@ -31,11 +31,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/auth/**", "/files/**", "/doc.html", 
                         "/swagger-ui/**", "/v3/api-docs/**", "/webjars/**", 
-                        "/favicon.ico", "/error");
+                        "/favicon.ico", "/error","/user/login");
     }
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 配置文件上传目录
         registry.addResourceHandler("/files/**")
                 .addResourceLocations("file:" + uploadPath);
     }

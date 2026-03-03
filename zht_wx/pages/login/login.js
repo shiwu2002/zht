@@ -1,146 +1,117 @@
 // pages/login/login.js
-const { userApi } = require('../../utils/api');
 const app = getApp();
+const { userApi } = require('../../utils/api');
 
 Page({
   data: {
     nickname: '',
-    phone: '',
-    agree: false,
-    loading: false,
-    canGetPhone: true,
-    canLogin: false,
+    avatar: '',
+    isEditingNickname: false,
+    defaultAvatars: [
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=2',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=3',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=5',
+      'https://api.dicebear.com/7.x/avataaars/svg?seed=6'
+    ]
   },
 
   onLoad() {
-    // 检查是否可以获取手机号
-    this.checkPhoneCapability();
+    // 微信登录获取 code
+    this.doWxLogin();
   },
 
-  // 检查获取手机号能力
-  checkPhoneCapability() {
-    // 这里可以检查微信版本等
-    this.setData({ canGetPhone: true });
+  // 微信登录
+  doWxLogin() {
+    wx.showLoading({ title: '登录中...' });
+    
+    app.wxLogin().then(code => {
+      console.log('微信登录成功，code:', code);
+      this.globalDataCode = code;
+      wx.hideLoading();
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({ title: '登录失败', icon: 'none' });
+      console.error('微信登录失败:', err);
+    });
   },
 
-  // 获取用户信息
-  onGetUserInfo(e) {
-    if (e.detail.errMsg === 'getUserInfo:ok') {
-      const { nickName, avatarUrl } = e.detail.userInfo;
-      this.setData({
-        nickname: nickName,
-        avatar: avatarUrl,
-        canLogin: this.data.agree && nickName.length > 0 // 手机号不再是必需项
-      });
-    } else {
-      console.log('获取用户信息失败', e.detail.errMsg);
-      wx.showToast({
-        title: '获取用户信息失败，请重试',
-        icon: 'none'
-      });
-    }
+  // 选择头像
+  onChooseAvatar(e) {
+    const { avatarUrl } = e.detail;
+    this.setData({
+      avatar: avatarUrl
+    });
   },
 
-  // 获取手机号
-  getPhoneNumber(e) {
-    if (e.detail.errMsg === 'getPhoneNumber:ok') {
-      console.log('获取手机号成功', e.detail);
-      this.setData({
-        phone: '138****8888', // 实际应用中这里应该是真实获取到的手机号
-        canLogin: this.data.nickname.length > 0 && this.data.agree // 手机号不再是必需项
-      });
-    } else {
-      console.log('获取手机号失败', e.detail.errMsg);
-      // 如果获取手机号失败，仍然允许用户继续登录
-      wx.showToast({
-        title: '获取手机号失败，可稍后在个人中心补充',
-        icon: 'none'
-      });
-      // 允许用户继续，不强制需要手机号
-      this.setData({
-        canLogin: this.data.nickname.length > 0 && this.data.agree
-      });
-    }
+  // 选择默认头像
+  onSelectDefaultAvatar(e) {
+    const avatar = e.currentTarget.dataset.avatar;
+    this.setData({
+      avatar: avatar
+    });
+  },
+
+  // 编辑昵称
+  onEditNickname() {
+    this.setData({
+      isEditingNickname: true
+    });
   },
 
   // 昵称输入
   onNicknameInput(e) {
-    const nickname = e.detail.value.trim();
-    this.setData({ 
-      nickname,
-      canLogin: nickname.length > 0 && this.data.agree // 手机号不再是必需项
+    this.setData({
+      nickname: e.detail.value
     });
   },
 
-  // 同意协议
-  onAgreeChange(e) {
-    const agree = e.detail.value;
-    this.setData({ 
-      agree,
-      canLogin: this.data.nickname.length > 0 && agree // 手机号不再是必需项
+  // 确认昵称
+  onConfirmNickname() {
+    this.setData({
+      isEditingNickname: false
     });
   },
 
-  // 显示协议
-  showAgreement() {
-    wx.showModal({
-      title: '用户协议',
-      content: '请阅读并同意用户协议和隐私政策',
-      showCancel: false
-    });
-  },
-
-  // 登录
-  async onLogin() {
-    if (!this.data.canLogin) {
-      wx.showToast({
-        title: '请完善信息后再登录',
-        icon: 'none'
-      });
+  // 完成设置并登录
+  onComplete() {
+    if (!this.data.nickname.trim()) {
+      wx.showToast({ title: '请输入昵称', icon: 'none' });
       return;
     }
 
-    this.setData({ loading: true });
+    if (!this.data.avatar) {
+      wx.showToast({ title: '请选择头像', icon: 'none' });
+      return;
+    }
 
-    try {
-      // 获取微信登录 code
-      const { code } = await app.wxLogin();
-      
-      // 调用后端登录接口
-      const res = await userApi.login({
-        code: code,
-        nickname: this.data.nickname,
-        phone: this.data.phone || '', // 手机号变为可选项
-        avatar: this.data.avatar || ''
-      });
+    wx.showLoading({ title: '登录中...' });
 
+    // 调用登录接口
+    userApi.login({
+      code: this.globalDataCode,
+      nickname: this.data.nickname,
+      avatar: this.data.avatar
+    }).then(res => {
       // 保存 token
       wx.setStorageSync('token', res.data);
       
-      // 更新全局数据
-      app.globalData.token = res.data;
-      app.globalData.userInfo = { 
-        nickName: this.data.nickname, 
-        avatarUrl: this.data.avatar 
-      };
-
-      wx.showToast({
-        title: '登录成功',
-        icon: 'success'
+      // 保存用户信息
+      wx.setStorageSync('userInfo', {
+        nickname: this.data.nickname,
+        avatar: this.data.avatar
       });
 
-      // 跳转首页
+      wx.hideLoading();
+      
+      // 跳转至首页
       wx.switchTab({
         url: '/pages/index/index'
       });
-    } catch (err) {
-      console.error('登录失败', err);
-      wx.showToast({
-        title: '登录失败，请重试',
-        icon: 'error'
-      });
-    } finally {
-      this.setData({ loading: false });
-    }
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('登录失败:', err);
+    });
   }
 });

@@ -10,9 +10,9 @@ spring:
   # 数据源配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/idle_exchange?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/zht?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: 1234567
   
   # 文件上传配置
   servlet:
@@ -40,8 +40,8 @@ spring:
   mail:
     host: smtp.qq.com
     port: 587
-    username: your-email@qq.com
-    password: your-auth-code
+    username: 848572306@qq.com
+    password: ${QQ_SMTP_KEY}
     properties:
       mail:
         smtp:
@@ -84,8 +84,8 @@ jwt:
 # 微信小程序配置
 wechat:
   miniapp:
-    appid: your-miniapp-appid
-    secret: your-miniapp-secret
+    appid: ${WX_APPID}
+    secret: ${WX_SECRET}
 
 # 文件存储配置
 file:

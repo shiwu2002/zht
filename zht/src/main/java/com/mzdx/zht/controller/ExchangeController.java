@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "交换管理")
 @RestController
-@RequestMapping("/api/exchange")
+@RequestMapping("/exchange")
 @RequiredArgsConstructor
 public class ExchangeController {
     
