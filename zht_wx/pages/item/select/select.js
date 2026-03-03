@@ -44,9 +44,9 @@ Page({
         size: this.data.size
       });
 
-      // 过滤掉排除的物品
+      // 过滤掉排除的物品和已下架的物品
       const filteredList = (res.data.records || []).filter(
-        item => item.id !== this.data.excludeId
+        item => item.id !== this.data.excludeId && item.status === 1
       );
 
       const newList = this.data.current === 1 
@@ -60,6 +60,7 @@ Page({
       });
     } catch (err) {
       console.error('加载失败', err);
+      wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
       this.setData({ loading: false });
     }

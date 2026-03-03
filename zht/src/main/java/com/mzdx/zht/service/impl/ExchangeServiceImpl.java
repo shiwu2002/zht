@@ -163,15 +163,18 @@ public class ExchangeServiceImpl extends ServiceImpl<ExchangeMapper, Exchange> i
         Page<Exchange> page = new Page<>(current, size);
         LambdaQueryWrapper<Exchange> wrapper = new LambdaQueryWrapper<>();
         
-        // type: 1-我发起的, 2-收到的
-        if (type == 1) {
-            wrapper.eq(Exchange::getRequestUserId, userId);
-        } else if (type == 2) {
-            wrapper.eq(Exchange::getOfferUserId, userId);
-        } else {
+        // type: 1-我发起的，2-我收到的，其他 - 全部
+        if (type == null || type <= 0 || type > 2) {
+            // 显示全部：发起的或收到的
             wrapper.and(w -> w.eq(Exchange::getRequestUserId, userId)
                     .or()
                     .eq(Exchange::getOfferUserId, userId));
+        } else if (type == 1) {
+            // 我发起的
+            wrapper.eq(Exchange::getRequestUserId, userId);
+        } else if (type == 2) {
+            // 我收到的
+            wrapper.eq(Exchange::getOfferUserId, userId);
         }
         
         wrapper.orderByDesc(Exchange::getCreateTime);

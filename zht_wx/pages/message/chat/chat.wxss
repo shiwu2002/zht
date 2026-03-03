@@ -9,6 +9,7 @@
 .message-list {
   flex: 1;
   padding: 30rpx;
+  overflow-y: auto;
 }
 
 .message-item {
@@ -24,30 +25,41 @@
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .message-content {
-  max-width: 500rpx;
+  max-width: 60%;
   padding: 20rpx;
+  border-radius: 12rpx;
+  position: relative;
+}
+
+.message-item.other .message-content {
   background: #ffffff;
-  border-radius: 16rpx;
-  margin: 0 20rpx;
+  margin-left: 20rpx;
+  border-top-left-radius: 4rpx;
 }
 
 .message-item.self .message-content {
-  background: #07c160;
-  color: #ffffff;
+  background: #95ec69;
+  margin-right: 20rpx;
+  border-top-right-radius: 4rpx;
 }
 
 .message-text {
   font-size: 28rpx;
-  display: block;
-  margin-bottom: 10rpx;
+  color: #333333;
+  line-height: 1.5;
+  word-break: break-all;
 }
 
 .message-time {
   font-size: 22rpx;
-  opacity: 0.6;
+  color: #999999;
+  display: block;
+  margin-top: 8rpx;
+  text-align: right;
 }
 
 .input-bar {
@@ -55,23 +67,23 @@
   align-items: center;
   padding: 20rpx;
   background: #ffffff;
-  border-top: 1rpx solid #eeeeee;
+  border-top: 1rpx solid #e5e5e5;
+  gap: 20rpx;
 }
 
 .input {
   flex: 1;
-  height: 72rpx;
+  padding: 16rpx 24rpx;
   background: #f5f5f5;
-  border-radius: 36rpx;
-  padding: 0 30rpx;
+  border-radius: 24rpx;
   font-size: 28rpx;
 }
 
 .send-btn {
-  margin-left: 20rpx;
   padding: 16rpx 32rpx;
   background: #07c160;
   color: #ffffff;
-  border-radius: 36rpx;
+  border-radius: 24rpx;
   font-size: 28rpx;
+  font-weight: bold;
 }

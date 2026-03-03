@@ -316,7 +316,7 @@ Content-Type: application/json
 - 查询参数:
   - current(int, 默认=1)
   - size(int, 默认=10)
-  - type(int, 可选)
+  - type(int, 1-我发起的，2-我收到的，其他 - 全部)
 - 成功响应:
   - data(Page<ExchangeVO>)
 

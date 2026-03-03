@@ -27,7 +27,7 @@ Page({
 
   editItem(e) {
     const itemId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/item/edit?id=${itemId}` });
+    wx.navigateTo({ url: `/pages/item/edit/edit?id=${itemId}` });
   },
 
   deleteItem(e) {

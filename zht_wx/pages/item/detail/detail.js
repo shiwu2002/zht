@@ -56,15 +56,25 @@ Page({
 
   // 发起交换
   onExchange() {
+    console.log('点击发起交换，物品 ID:', this.data.id);
+    if (!this.data.detail) {
+      wx.showToast({ title: '数据加载中', icon: 'none' });
+      return;
+    }
     wx.navigateTo({
-      url: `/pages/exchange/create?itemId=${this.data.id}`
+      url: `/pages/exchange/create/create?itemId=${this.data.id}`
     });
   },
 
   // 发消息
   onMessage() {
+    console.log('点击发消息，用户 ID:', this.data.detail?.userId);
+    if (!this.data.detail || !this.data.detail.userId) {
+      wx.showToast({ title: '用户信息缺失', icon: 'none' });
+      return;
+    }
     wx.navigateTo({
-      url: `/pages/message/chat?userId=${this.data.detail.userId}`
+      url: `/pages/message/chat/chat?userId=${this.data.detail.userId}`
     });
   },
 

@@ -15,17 +15,17 @@
   <view class="stats-card">
     <view class="stats-row">
       <view class="stat-item" bindtap="toItem">
-        <text class="stat-num">{{itemCount}}</text>
+        <text class="stat-num">{{stats.itemCount}}</text>
         <text class="stat-label">发布</text>
       </view>
       <view class="stat-divider"></view>
       <view class="stat-item" bindtap="toFavorite">
-        <text class="stat-num">{{favoriteCount}}</text>
+        <text class="stat-num">{{stats.favoriteCount}}</text>
         <text class="stat-label">收藏</text>
       </view>
       <view class="stat-divider"></view>
       <view class="stat-item" bindtap="toExchange">
-        <text class="stat-num">{{exchangeCount}}</text>
+        <text class="stat-num">{{stats.exchangeCount}}</text>
         <text class="stat-label">交换</text>
       </view>
     </view>

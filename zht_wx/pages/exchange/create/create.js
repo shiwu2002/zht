@@ -1,5 +1,6 @@
 // pages/exchange/create.js
 const { exchangeApi, itemApi } = require('../../../utils/api');
+const app = getApp();
 
 Page({
   data: {
@@ -30,7 +31,7 @@ Page({
   // 选择提供的物品
   selectOfferItem() {
     wx.navigateTo({
-      url: `/pages/item/select?type=offer&excludeId=${this.data.requestItemId}`
+      url: `/pages/item/select/select?type=offer&excludeId=${this.data.requestItemId}`
     });
   },
 
@@ -69,12 +70,12 @@ Page({
 
 // 监听选择物品返回
 Page.prototype.onShow = function() {
-  const selectedItem = getApp().globalData.selectedOfferItem;
+  const selectedItem = app.globalData.selectedOfferItem;
   if (selectedItem) {
     this.setData({
       offerItem: selectedItem,
       offerItemId: selectedItem.id
     });
-    getApp().globalData.selectedOfferItem = null;
+    app.globalData.selectedOfferItem = null;
   }
 };

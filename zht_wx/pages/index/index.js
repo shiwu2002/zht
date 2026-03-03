@@ -118,8 +118,9 @@ Page({
 
   // 跳转发布
   toPublish() {
+    console.log('点击发布物品');
     wx.navigateTo({
-      url: '/pages/item/publish'
+      url: '/pages/item/publish/publish'
     });
   },
 

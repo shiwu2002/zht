@@ -2,34 +2,37 @@
 <view class="container">
   <view class="tab-bar">
     <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="onTabChange" data-tab="0">全部</view>
-    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="onTabChange" data-tab="1">待确认</view>
-    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="onTabChange" data-tab="2">进行中</view>
-    <view class="tab-item {{currentTab === 3 ? 'active' : ''}}" bindtap="onTabChange" data-tab="3">已完成</view>
+    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="onTabChange" data-tab="1">我发起的</view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="onTabChange" data-tab="2">我收到的</view>
   </view>
 
   <view class="exchange-list">
     <view class="exchange-item" wx:for="{{exchangeList}}" wx:key="id" 
           data-id="{{item.id}}" bindtap="toDetail">
       <view class="exchange-header">
-        <text class="exchange-no">交换单号：{{item.exchangeNo}}</text>
+        <text class="exchange-no">交换单号：#{{item.id}}</text>
         <text class="exchange-status {{'status-' + item.status}}">{{statusMap[item.status]}}</text>
       </view>
       <view class="exchange-content">
         <view class="exchange-item-info">
-          <text class="label">我提供的：</text>
-          <text class="title">{{item.offerItemTitle}}</text>
+          <text class="label">{{currentTab === 1 ? '对方：' : '申请人：'}}</text>
+          <text class="title">{{currentTab === 1 ? (item.ownerNickname || '未知') : (item.applicantNickname || '未知')}}</text>
         </view>
         <view class="exchange-arrow">⇄</view>
         <view class="exchange-item-info">
-          <text class="label">我想换：</text>
-          <text class="title">{{item.requestItemTitle}}</text>
+          <text class="label">{{currentTab === 1 ? '我想换：' : '物品：'}}</text>
+          <text class="title">{{item.itemTitle || '未知物品'}}</text>
         </view>
       </view>
       <view class="exchange-footer">
         <text class="time">{{item.createTime}}</text>
-        <view class="actions" wx:if="{{item.status === 1}}">
+        <view class="actions" wx:if="{{item.status === 0}}">
           <button class="action-btn reject" catchtap="rejectExchange" data-id="{{item.id}}">拒绝</button>
           <button class="action-btn confirm" catchtap="confirmExchange" data-id="{{item.id}}">确认</button>
+        </view>
+        <view class="actions" wx:if="{{item.status === 1}}">
+          <button class="action-btn cancel" catchtap="cancelExchange" data-id="{{item.id}}">取消</button>
+          <button class="action-btn complete" catchtap="completeExchange" data-id="{{item.id}}">完成</button>
         </view>
       </view>
     </view>

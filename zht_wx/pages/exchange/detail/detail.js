@@ -60,5 +60,41 @@ Page({
         }
       }
     });
+  },
+
+  async onCancel() {
+    wx.showModal({
+      title: '取消交换',
+      content: '确定要取消这次交换吗？',
+      success: async (res) => {
+        if (res.confirm) {
+          try {
+            await exchangeApi.cancel(this.data.id);
+            wx.showToast({ title: '已取消', icon: 'success' });
+            this.loadDetail();
+          } catch (err) {
+            console.error('取消失败', err);
+          }
+        }
+      }
+    });
+  },
+
+  async onComplete() {
+    wx.showModal({
+      title: '完成交换',
+      content: '确认已经完成交换了吗？',
+      success: async (res) => {
+        if (res.confirm) {
+          try {
+            await exchangeApi.complete(this.data.id);
+            wx.showToast({ title: '已完成', icon: 'success' });
+            this.loadDetail();
+          } catch (err) {
+            console.error('完成失败', err);
+          }
+        }
+      }
+    });
   }
 });

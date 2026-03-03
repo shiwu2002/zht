@@ -16,6 +16,17 @@ INSERT INTO `tb_category` (`name`, `icon`, `sort`) VALUES
 ('其他', 'other', 10);
 
 
+INSERT INTO `tb_user` (`openid`, `nickname`, `avatar`, `phone`, `gender`, `address`, `credit_score`, `status`) VALUES
+('oIHWf7gRcXtNgvaU20hfsfy922rI_2', '李四', 'https://example.com/avatar2.jpg', '13800138002', 1, '上海市浦东新区', 95, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_3', '王五', 'https://example.com/avatar3.jpg', '13800138003', 1, '广州市天河区', 90, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_4', '赵六', 'https://example.com/avatar4.jpg', '13800138004', 1, '深圳市南山区', 85, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_5', '钱七', 'https://example.com/avatar5.jpg', '13800138005', 1, '杭州市西湖区', 80, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_6', '孙八', 'https://example.com/avatar6.jpg', '13800138006', 2, '成都市武侯区', 75, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_7', '周九', 'https://example.com/avatar7.jpg', '13800138007', 2, '南京市鼓楼区', 70, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_8', '吴十', 'https://example.com/avatar8.jpg', '13800138008', 2, '武汉市江汉区', 65, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_9', '郑十一', 'https://example.com/avatar9.jpg', '13800138009', 1, '西安市雁塔区', 60, 1),
+('oIHWf7gRcXtNgvaU20hfsfy922rI_10', '刘十二', 'https://example.com/avatar10.jpg', '13800138010', 2, '重庆市渝中区', 55, 1);
+
 
 
 -- 物品表测试数据（10 条）

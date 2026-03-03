@@ -1,13 +1,37 @@
 <!--pages/exchange/detail.wxml-->
 <view class="container" wx:if="{{detail}}">
-  <view class="status-bar">
+  <view class="status-bar status-{{detail.status}}">
     <text class="status-text">{{statusMap[detail.status]}}</text>
   </view>
 
   <view class="section">
-    <text class="section-title">交换信息</text>
-    <view class="info-row"><text class="label">交换单号:</text><text>{{detail.exchangeNo}}</text></view>
-    <view class="info-row"><text class="label">创建时间:</text><text>{{detail.createTime}}</text></view>
+    <text class="section-title">基本信息</text>
+    <view class="info-row">
+      <text class="label">交换单号:</text>
+      <text>{{detail.exchangeNo}}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">创建时间:</text>
+      <text>{{detail.createTime}}</text>
+    </view>
+    <view class="info-row" wx:if="{{detail.completeTime}}">
+      <text class="label">完成时间:</text>
+      <text>{{detail.completeTime}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">对方信息</text>
+    <view class="user-info">
+      <image class="user-avatar" src="{{detail.targetUserAvatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
+      <view class="user-detail">
+        <text class="user-nickname">{{detail.targetUserName || '未知用户'}}</text>
+        <view class="user-credit">
+          <text class="credit-label">信用分</text>
+          <text class="credit-score">{{detail.targetUserCredit || 0}}</text>
+        </view>
+      </view>
+    </view>
   </view>
 
   <view class="section">
@@ -30,5 +54,10 @@
   <view class="actions" wx:if="{{detail.status === 1 && detail.targetUserId === userId}}">
     <button class="action-btn reject" bindtap="onReject">拒绝</button>
     <button class="action-btn confirm" bindtap="onConfirm">确认</button>
+  </view>
+
+  <view class="actions" wx:if="{{detail.status === 2 && detail.requestUserId === userId}}">
+    <button class="action-btn cancel" bindtap="onCancel">取消</button>
+    <button class="action-btn complete" bindtap="onComplete">完成</button>
   </view>
 </view>

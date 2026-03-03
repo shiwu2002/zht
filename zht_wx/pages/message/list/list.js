@@ -24,7 +24,7 @@ Page({
   toChat(e) {
     const user = e.currentTarget.dataset.user;
     wx.navigateTo({
-      url: `/pages/message/chat?userId=${user.userId}&userName=${user.userNickname}&userAvatar=${user.userAvatar}`
+      url: `/pages/message/chat/chat?userId=${user.userId}&userName=${user.userNickname}&userAvatar=${user.userAvatar}`
     });
   }
 });

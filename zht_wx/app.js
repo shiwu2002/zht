@@ -44,6 +44,8 @@ App({
 
   globalData: {
     userInfo: null,
-    token: null
+    token: null,
+    selectedOfferItem: null,
+    selectedRequestItem: null
   }
 });

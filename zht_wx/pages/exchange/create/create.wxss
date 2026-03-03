@@ -49,6 +49,9 @@
   font-size: 28rpx;
   font-weight: bold;
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .item-info {
@@ -65,6 +68,9 @@
   color: #999999;
   margin-top: 10rpx;
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .message-input {
