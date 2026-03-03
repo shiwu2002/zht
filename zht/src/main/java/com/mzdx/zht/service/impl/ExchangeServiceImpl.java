@@ -8,16 +8,19 @@ import com.mzdx.zht.common.ResultCode;
 import com.mzdx.zht.dto.ExchangeDTO;
 import com.mzdx.zht.entity.Exchange;
 import com.mzdx.zht.entity.Item;
+import com.mzdx.zht.entity.User;
 import com.mzdx.zht.exception.BusinessException;
 import com.mzdx.zht.mapper.ExchangeMapper;
 import com.mzdx.zht.service.ExchangeService;
 import com.mzdx.zht.service.ItemService;
+import com.mzdx.zht.service.UserService;
 import com.mzdx.zht.vo.ExchangeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +32,8 @@ import java.util.stream.Collectors;
 public class ExchangeServiceImpl extends ServiceImpl<ExchangeMapper, Exchange> implements ExchangeService {
     
     private final ItemService itemService;
+
+    private final UserService userService;
     
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -155,7 +160,45 @@ public class ExchangeServiceImpl extends ServiceImpl<ExchangeMapper, Exchange> i
         if (exchange == null) {
             throw new BusinessException(ResultCode.EXCHANGE_NOT_FOUND);
         }
-        return BeanUtil.copyProperties(exchange, ExchangeVO.class);
+        
+        // 复制基本属性
+        ExchangeVO vo = BeanUtil.copyProperties(exchange, ExchangeVO.class);
+        
+        // 填充请求方物品信息
+        Item requestItem = itemService.getById(exchange.getRequestItemId());
+        if (requestItem != null) {
+            vo.setItemId(requestItem.getId());
+            vo.setItemTitle(requestItem.getTitle());
+            String[] images = requestItem.getImages() != null ? requestItem.getImages().split(",") : new String[0];
+            vo.setItemImage(images.length > 0 ? images[0] : null);
+        }
+        
+        // 填充提供方物品信息（被申请交换的物品）
+        Item offerItem = itemService.getById(exchange.getOfferItemId());
+        if (offerItem != null) {
+            vo.setOfferItemId(offerItem.getId());
+            vo.setOfferItemTitle(offerItem.getTitle());
+            String[] images = offerItem.getImages() != null ? offerItem.getImages().split(",") : new String[0];
+            vo.setOfferItemImage(images.length > 0 ? images[0] : null);
+        }
+        
+        // 填充请求方用户信息（申请人）
+        User requestUser = userService.getById(exchange.getRequestUserId());
+        if (requestUser != null) {
+            vo.setApplicantId(requestUser.getId());
+            vo.setApplicantNickname(requestUser.getNickname());
+            vo.setApplicantAvatar(requestUser.getAvatar());
+        }
+        
+        // 填充提供方用户信息（物品主人）
+        User offerUser = userService.getById(exchange.getOfferUserId());
+        if (offerUser != null) {
+            vo.setOwnerId(offerUser.getId());
+            vo.setOwnerNickname(offerUser.getNickname());
+            vo.setOwnerAvatar(offerUser.getAvatar());
+        }
+        
+        return vo;
     }
     
     @Override
@@ -181,9 +224,51 @@ public class ExchangeServiceImpl extends ServiceImpl<ExchangeMapper, Exchange> i
         
         Page<Exchange> exchangePage = this.page(page, wrapper);
         Page<ExchangeVO> voPage = new Page<>(exchangePage.getCurrent(), exchangePage.getSize(), exchangePage.getTotal());
-        voPage.setRecords(exchangePage.getRecords().stream()
-                .map(exchange -> BeanUtil.copyProperties(exchange, ExchangeVO.class))
-                .collect(Collectors.toList()));
+        
+        // 填充详细的物品和用户信息
+        List<ExchangeVO> voList = exchangePage.getRecords().stream()
+                .map(exchange -> {
+                    ExchangeVO vo = BeanUtil.copyProperties(exchange, ExchangeVO.class);
+                    
+                    // 获取请求方物品信息
+                    Item requestItem = itemService.getById(exchange.getRequestItemId());
+                    if (requestItem != null) {
+                        vo.setItemId(requestItem.getId());
+                        vo.setItemTitle(requestItem.getTitle());
+                        String[] images = requestItem.getImages() != null ? requestItem.getImages().split(",") : new String[0];
+                        vo.setItemImage(images.length > 0 ? images[0] : null);
+                    }
+                    
+                    // 获取提供方物品信息（被申请交换的物品）
+                    Item offerItem = itemService.getById(exchange.getOfferItemId());
+                    if (offerItem != null) {
+                        vo.setOfferItemId(offerItem.getId());
+                        vo.setOfferItemTitle(offerItem.getTitle());
+                        String[] images = offerItem.getImages() != null ? offerItem.getImages().split(",") : new String[0];
+                        vo.setOfferItemImage(images.length > 0 ? images[0] : null);
+                    }
+                    
+                    // 获取请求方用户信息（申请人）
+                    User requestUser = userService.getById(exchange.getRequestUserId());
+                    if (requestUser != null) {
+                        vo.setApplicantId(requestUser.getId());
+                        vo.setApplicantNickname(requestUser.getNickname());
+                        vo.setApplicantAvatar(requestUser.getAvatar());
+                    }
+                    
+                    // 获取提供方用户信息（物品主人）
+                    User offerUser = userService.getById(exchange.getOfferUserId());
+                    if (offerUser != null) {
+                        vo.setOwnerId(offerUser.getId());
+                        vo.setOwnerNickname(offerUser.getNickname());
+                        vo.setOwnerAvatar(offerUser.getAvatar());
+                    }
+                    
+                    return vo;
+                })
+                .collect(Collectors.toList());
+        
+        voPage.setRecords(voList);
         return voPage;
     }
 }

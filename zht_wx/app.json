@@ -19,13 +19,22 @@
     "pages/user/user/user",
     "pages/user/edit/edit",
     "pages/logs/logs"
-  ],
+  ],  
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序发布物品时获取位置信息"
+    }
+  },
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "置换通",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f5f5f5"
   },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseLocation"
+  ],
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#07c160",

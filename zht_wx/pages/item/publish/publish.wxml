@@ -5,7 +5,7 @@
   <view class="form-section">
     <view class="form-section-title">物品图片</view>
     <view class="image-uploader">
-      <view class="image-item" wx:for="{{images}}" wx:key="*this">
+      <view class="image-item" wx:for="{{images}}" wx:key="*this" bindtap="previewImage" data-index="{{index}}">
         <image class="image" src="{{item}}" mode="aspectFill"></image>
         <view class="delete-btn" catchtap="deleteImage" data-index="{{index}}">×</view>
       </view>
@@ -38,9 +38,9 @@
 
     <view class="form-item">
       <text class="label required">描述</text>
-      <textarea class="textarea" placeholder="请详细描述物品的品牌、型号、新旧程度、使用情况等" 
+      <textarea class="textarea" placeholder="描述物品的品牌、型号、新旧程度、使用情况等" 
                 value="{{description}}" bindinput="onDescInput" maxlength="500" />
-      <view class="hint">{{description.length}}/500</view>
+      <view class="char-count">{{description.length}}/500</view>
     </view>
   </view>
 
@@ -70,18 +70,20 @@
     <view class="form-item">
       <text class="label required">取货位置</text>
       <view class="location-row" bindtap="getLocation">
-        <text class="location-text {{location ? 'has-value' : ''}}">
-          {{location || '点击获取位置'}}
-        </text>
+        <view class="location-content">
+          <text class="location-text {{location ? 'has-value' : ''}}">
+            {{location || '点击获取/输入位置'}}
+          </text>
+        </view>
         <text class="arrow">></text>
       </view>
+      <view class="location-hint">支持自动定位、地图选点或手动输入</view>
     </view>
 
     <view class="form-item">
       <text class="label">标签</text>
       <input class="input" placeholder="多个标签用逗号分隔，如：99 新，包邮，可小刀" 
              value="{{tags}}" bindinput="onTagsInput" />
-      <view class="hint">添加标签可以让物品更容易被搜索到</view>
     </view>
   </view>
 
@@ -90,6 +92,38 @@
     <button class="submit-btn" bindtap="onSubmit" loading="{{loading}}">
       {{loading ? '发布中...' : '立即发布'}}
     </button>
+  </view>
+
+  <!-- 手动输入位置弹窗 -->
+  <view class="modal-mask" wx:if="{{showLocationPicker}}" catchtap="cancelManualLocation">
+    <view class="modal-content" catchtap="">
+      <view class="modal-header">
+        <text class="modal-title">输入位置信息</text>
+        <text class="modal-close" bindtap="cancelManualLocation">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <view class="location-input-row">
+          <input 
+            class="location-input" 
+            placeholder="请输入详细地址，如：北京市朝阳区 xx 路 xx 号" 
+            value="{{manualLocation}}"
+            bindinput="onManualLocationInput"
+            maxlength="100"
+          />
+        </view>
+        
+        <view class="location-tips">
+          <text>提示：建议填写详细的地址信息，方便交易双方确认位置</text>
+        </view>
+      </view>
+      
+      <view class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" bindtap="cancelManualLocation">取消</button>
+        <button class="modal-btn modal-btn-map" bindtap="chooseLocationOnMap">📍 地图选点</button>
+        <button class="modal-btn modal-btn-confirm" bindtap="confirmManualLocation">确定</button>
+      </view>
+    </view>
   </view>
 
 </view>

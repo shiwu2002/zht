@@ -1,5 +1,6 @@
 // pages/user/edit.js
 const { userApi, fileApi } = require('../../../utils/api');
+const { uploadImages } = require('../../../utils/imageUploader');
 const app = getApp();
 
 Page({
@@ -30,21 +31,27 @@ Page({
 
   // 更新头像
   async updateAvatar() {
-    wx.chooseMedia({
-      count: 1,
-      mediaType: ['image'],
-      success: async (res) => {
-        wx.showLoading({ title: '上传中...' });
-        try {
-          const uploadRes = await fileApi.upload(res.tempFiles[0].tempFilePath);
-          this.setData({ avatar: uploadRes.data });
-          wx.hideLoading();
-        } catch (err) {
-          wx.hideLoading();
-          wx.showToast({ title: '上传失败', icon: 'none' });
+    try {
+      const uploadedUrls = await uploadImages({
+        count: 1,
+        isAvatar: true,
+        onProgress: (progress) => {
+          wx.showLoading({ 
+            title: `上传中 ${progress.uploaded}/${progress.total}`,
+            mask: true 
+          });
         }
+      });
+      
+      if (uploadedUrls && uploadedUrls.length > 0) {
+        this.setData({ avatar: uploadedUrls[0] });
       }
-    });
+      
+      wx.hideLoading();
+    } catch (err) {
+      console.error('上传头像失败', err);
+      wx.hideLoading();
+    }
   },
 
   onNicknameInput(e) { this.setData({ nickname: e.detail.value }); },
