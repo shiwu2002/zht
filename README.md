@@ -1,13 +1,18 @@
-# 闲置物品交换平台 - 后端项目
+# 闲置物品交换平台 - 全栈解决方案
 
-基于微信小程序的闲置物品交换平台后端服务，使用Spring Boot 3.5.11 + MyBatis-Plus + MySQL开发。
+基于微信小程序 + Spring Boot的闲置物品交换平台，包含后端服务和小程序前端两部分。
 
 ## 项目简介
 
-本项目是一个完整的闲置物品交换平台后端系统，支持用户通过微信小程序进行闲置物品的发布、检索、交换、沟通等功能。
+本项目是一个完整的闲置物品交换平台，采用前后端分离架构：
+- **后端服务**：基于Spring Boot 3.5.11 + MyBatis-Plus + MySQL开发
+- **小程序前端**：基于微信原生小程序框架开发
+
+支持用户通过微信小程序进行闲置物品的发布、检索、交换、沟通等功能。
 
 ## 技术栈
 
+### 后端技术栈
 - **Spring Boot**: 3.5.11
 - **Java**: 21
 - **MyBatis-Plus**: 3.5.9
@@ -19,49 +24,52 @@
 - **Knife4j**: API文档
 - **Hutool**: 工具类库
 
+### 小程序技术栈
+- **微信小程序原生框架**
+- **JavaScript ES6+**
+- **WXML/WXSS**
+
 ## 项目结构
 
 ```
-zht/
-├── src/main/java/com/mzdx/zht/
-│   ├── common/              # 通用类
-│   │   ├── Result.java      # 统一返回结果
-│   │   └── ResultCode.java  # 状态码枚举
-│   ├── config/              # 配置类
-│   │   ├── WebMvcConfig.java
-│   │   ├── WeChatConfig.java
-│   │   ├── Knife4jConfig.java
-│   │   ├── WebSocketConfig.java
-│   │   └── MyBatisPlusConfig.java
-│   ├── controller/          # 控制器层
-│   │   ├── UserController.java
-│   │   ├── ItemController.java
-│   │   ├── CategoryController.java
-│   │   ├── ExchangeController.java
-│   │   ├── MessageController.java
-│   │   ├── FavoriteController.java
-│   │   ├── ReviewController.java
-│   │   ├── ReportController.java
-│   │   └── FileController.java
-│   ├── dto/                 # 数据传输对象
-│   ├── entity/              # 实体类
-│   ├── exception/           # 异常处理
-│   ├── handler/             # 处理器
-│   ├── interceptor/         # 拦截器
-│   ├── mapper/              # Mapper接口
-│   ├── service/             # 服务层
-│   ├── utils/               # 工具类
-│   ├── vo/                  # 视图对象
-│   └── websocket/           # WebSocket
-├── src/main/resources/
-│   ├── sql/                 # SQL脚本
-│   │   ├── schema.sql       # 数据库表结构
-│   │   └── data.sql         # 初始数据
-│   └── application.yml      # 配置文件
-└── pom.xml                  # Maven配置
+zht/                                # 工作区根目录
+├── zht/                           # 后端项目目录
+│   ├── src/main/java/com/mzdx/zht/
+│   │   ├── common/                # 通用类
+│   │   ├── config/                # 配置类
+│   │   ├── controller/            # 控制器层
+│   │   ├── dto/                   # 数据传输对象
+│   │   ├── entity/                # 实体类
+│   │   ├── exception/             # 异常处理
+│   │   ├── handler/               # 处理器
+│   │   ├── interceptor/           # 拦截器
+│   │   ├── mapper/                # Mapper接口
+│   │   ├── service/               # 服务层
+│   │   ├── utils/                 # 工具类
+│   │   ├── vo/                    # 视图对象
+│   │   └── websocket/             # WebSocket
+│   ├── src/main/resources/
+│   │   ├── sql/                   # SQL脚本
+│   │   └── application.yml        # 配置文件
+│   └── pom.xml                    # Maven配置
+└── zht_wx/                        # 小程序项目目录
+    ├── pages/                     # 页面
+    │   ├── login/                 # 登录页
+    │   ├── index/                 # 首页
+    │   ├── item/                  # 物品相关
+    │   ├── category/              # 分类页
+    │   ├── exchange/              # 交换相关
+    │   ├── message/               # 消息相关
+    │   ├── favorite/              # 收藏页
+    │   └── user/                  # 用户相关
+    ├── utils/                     # 工具函数
+    ├── images/                    # 图片资源
+    ├── app.js                     # 小程序入口
+    ├── app.json                   # 小程序配置
+    └── README.md                  # 项目说明
 ```
 
-## 核心功能模块
+## 功能模块
 
 ### 1. 用户模块
 - 微信小程序授权登录
@@ -109,14 +117,20 @@ zht/
 
 ### 1. 环境要求
 
+#### 后端环境
 - JDK 21+
 - Maven 3.6+
 - MySQL 8.0+
 - Redis 6.0+
 
-### 2. 数据库配置
+#### 小程序环境
+- 微信开发者工具
+- 有效的微信小程序AppID
 
-修改 `src/main/resources/application.yml` 中的数据库连接信息：
+### 2. 后端部署
+
+#### 数据库配置
+修改 `zht/src/main/resources/application.yml` 中的数据库连接信息：
 
 ```yaml
 spring:
@@ -126,20 +140,19 @@ spring:
     password: your_password
 ```
 
-### 3. 初始化数据库
-
+#### 初始化数据库
 执行以下SQL脚本：
 
 ```bash
 # 创建数据库表
+cd zht
 mysql -u root -p < src/main/resources/sql/schema.sql
 
 # 初始化分类数据
 mysql -u root -p < src/main/resources/sql/data.sql
 ```
 
-### 4. 微信小程序配置
-
+#### 微信小程序配置
 修改 `application.yml` 中的微信小程序配置：
 
 ```yaml
@@ -149,8 +162,7 @@ wechat:
     secret: your_secret
 ```
 
-### 5. Redis配置
-
+#### Redis配置
 修改 `application.yml` 中的Redis配置：
 
 ```yaml
@@ -162,10 +174,10 @@ spring:
       password: your_password  # 如果没有密码可以删除此行
 ```
 
-### 6. 运行项目
-
+#### 运行后端项目
 ```bash
 # 使用Maven运行
+cd zht
 mvn spring-boot:run
 
 # 或者打包后运行
@@ -173,9 +185,23 @@ mvn clean package
 java -jar target/zht-0.0.1-SNAPSHOT.jar
 ```
 
-### 7. 访问API文档
-
+#### 访问API文档
 项目启动后，访问：http://localhost:8080/doc.html
+
+### 3. 小程序部署
+
+#### 配置后端地址
+修改 `zht_wx/utils/api.js` 中的 `BASE_URL`:
+
+```javascript
+const BASE_URL = 'http://your-backend-ip:8080/api';
+```
+
+#### 导入微信开发者工具
+1. 打开微信开发者工具
+2. 导入项目，选择 `zht_wx` 目录
+3. 填写您的 AppID
+4. 编译运行
 
 ## API接口说明
 
@@ -248,13 +274,6 @@ java -jar target/zht-0.0.1-SNAPSHOT.jar
 4. **Redis配置**：如果不使用Redis，需要注释掉相关配置
 5. **跨域配置**：已在 `WebMvcConfig` 中配置CORS，可根据需要调整
 
-## 开发建议
-
-1. 使用Knife4j进行API测试：http://localhost:8080/doc.html
-2. 查看日志了解系统运行状态
-3. 建议使用Postman或其他API测试工具进行接口测试
-4. WebSocket测试可使用在线工具或浏览器控制台
-
 ## 常见问题
 
 ### 1. 数据库连接失败
@@ -277,8 +296,14 @@ java -jar target/zht-0.0.1-SNAPSHOT.jar
 - 检查文件大小是否超过限制（默认10MB）
 - 检查文件类型是否支持
 
+### 5. 小程序无法连接后端
+- 检查后端服务是否已启动
+- 检查网络是否通畅
+- 检查后端地址配置是否正确
+
 ## 后续优化建议
 
+### 后端优化
 1. **性能优化**
    - 添加Redis缓存
    - 数据库查询优化
@@ -295,6 +320,16 @@ java -jar target/zht-0.0.1-SNAPSHOT.jar
    - 添加敏感词过滤
    - 完善权限控制
    - 添加操作日志
+
+### 小程序优化
+1. **功能完善**
+   - 搜索功能
+   - 物品编辑
+   - 评价功能
+   - 举报功能
+   - 地址管理
+   - WebSocket 实时消息
+   - 分享功能
 
 ## 联系方式
 
