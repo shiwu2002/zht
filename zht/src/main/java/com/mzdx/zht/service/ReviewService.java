@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mzdx.zht.entity.Review;
 import com.mzdx.zht.dto.ReviewDTO;
+import com.mzdx.zht.vo.ReviewVO;
 
 /**
  * 评价服务接口
@@ -16,9 +17,9 @@ public interface ReviewService extends IService<Review> {
     boolean addReview(ReviewDTO reviewDTO, Long reviewerId);
     
     /**
-     * 获取用户评价列表
+     * 获取用户评价列表（包含评价者信息）
      */
-    Page<Review> getUserReviews(Long userId, Integer current, Integer size);
+    Page<ReviewVO> getUserReviews(Long userId, Integer current, Integer size);
     
     /**
      * 获取交换评价

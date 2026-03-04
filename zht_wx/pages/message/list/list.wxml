@@ -1,23 +1,77 @@
 <!--pages/message/list.wxml-->
 <view class="container">
-  <view class="conversation-list">
-    <view class="conversation-item" wx:for="{{conversations}}" wx:key="userId" 
-          data-user="{{item}}" bindtap="toChat">
-      <image class="avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
-      <view class="conversation-info">
-        <view class="conversation-header">
-          <text class="username">{{item.userNickname}}</text>
-          <text class="time">{{item.lastTime}}</text>
-        </view>
-        <view class="conversation-content">
-          <text class="content {{item.unread ? 'unread' : ''}}">{{item.lastContent}}</text>
-          <view class="badge" wx:if="{{item.unreadCount > 0}}">{{item.unreadCount}}</view>
-        </view>
-      </view>
+  <!-- 顶部 Tab 切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="onTabChange">
+      全部
+    </view>
+    <view class="tab-item {{currentTab === 'message' ? 'active' : ''}}" data-tab="message" bindtap="onTabChange">
+      消息
+    </view>
+    <view class="tab-item {{currentTab === 'review' ? 'active' : ''}}" data-tab="review" bindtap="onTabChange">
+      评价
     </view>
   </view>
 
-  <view class="empty" wx:if="{{conversations.length === 0}}">
-    <text>暂无消息</text>
+  <!-- 消息列表 -->
+  <view class="message-section" wx:if="{{currentTab === 'all' || currentTab === 'message'}}">
+    <view class="section-title">
+      <text>消息</text>
+      <text class="count" wx:if="{{conversations.length > 0}}">{{conversations.length}}</text>
+    </view>
+    
+    <view class="conversation-list" wx:if="{{conversations.length > 0}}">
+      <view class="conversation-item" wx:for="{{conversations}}" wx:key="*this" 
+            data-user="{{item}}" bindtap="toChat">
+        <image class="avatar" src="{{item.userAvatar || '/images/other/xiaoxi.png'}}" mode="aspectFill"></image>
+        <view class="conversation-info">
+          <view class="conversation-header">
+            <text class="username">{{item.userNickname || '未知用户'}}</text>
+            <text class="time">{{item.lastTime}}</text>
+          </view>
+          <view class="conversation-content">
+            <text class="content {{item.unreadCount > 0 ? 'unread' : ''}}">{{item.lastContent}}</text>
+            <view class="badge" wx:if="{{item.unreadCount > 0}}">{{item.unreadCount}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{conversations.length === 0 && (currentTab === 'all' || currentTab === 'message')}}">
+      <image class="empty-icon" src="/images/other/xiaoxi.png" mode="aspectFit"></image>
+      <text>暂无消息</text>
+    </view>
+  </view>
+
+  <!-- 评价列表 -->
+  <view class="review-section" wx:if="{{currentTab === 'all' || currentTab === 'review'}}">
+    <view class="section-title">
+      <text>评价</text>
+      <text class="count" wx:if="{{reviews.length > 0}}">{{reviews.length}}</text>
+    </view>
+
+    <view class="review-list" wx:if="{{reviews.length > 0}}">
+      <view class="review-item" wx:for="{{reviews}}" wx:key="id" 
+            data-review="{{item}}" bindtap="viewReview">
+        <view class="review-header">
+          <text class="review-type">评价</text>
+          <text class="review-time">{{item.createTime}}</text>
+        </view>
+        <view class="review-content">
+          <view class="rating">
+            <text class="star" wx:for="{{5}}" wx:for-item="star" wx:key="*this">{{star <= item.rating ? '★' : '☆'}}</text>
+          </view>
+          <text class="review-text">{{item.content || '暂无内容'}}</text>
+        </view>
+        <view class="review-footer">
+          <text class="reviewer">评价人：{{item.userNickname}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{reviews.length === 0 && (currentTab === 'all' || currentTab === 'review')}}">
+      <image class="empty-icon" src="/images/other/xiaoxi.png" mode="aspectFit"></image>
+      <text>暂无评价</text>
+    </view>
   </view>
 </view>

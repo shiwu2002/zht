@@ -65,6 +65,26 @@
     <text class="message">{{detail.message}}</text>
   </view>
 
+  <!-- 评价信息 -->
+  <view class="section" wx:if="{{review}}">
+    <text class="section-title">评价信息</text>
+    <view class="review-content">
+      <view class="review-header">
+        <image class="review-avatar" src="{{review.reviewerAvatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
+        <view class="review-info">
+          <text class="review-name">{{review.reviewerName || '未知用户'}}</text>
+          <view class="review-rating">
+            <text class="star" wx:for="{{5}}" wx:key="*this">
+              {{index < review.rating ? '★' : '☆'}}
+            </text>
+          </view>
+        </view>
+      </view>
+      <text class="review-text">{{review.content || '暂无评价内容'}}</text>
+      <text class="review-time">{{review.createTime}}</text>
+    </view>
+  </view>
+
   <view class="info-row" wx:if="{{detail.rejectReason}}" style="background:#fff; padding:16rpx 30rpx;">
     <text class="label">拒绝原因:</text>
     <text class="reject-reason" style="color:#f44336;">{{detail.rejectReason}}</text>

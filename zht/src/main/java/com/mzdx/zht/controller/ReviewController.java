@@ -5,6 +5,7 @@ import com.mzdx.zht.common.Result;
 import com.mzdx.zht.dto.ReviewDTO;
 import com.mzdx.zht.entity.Review;
 import com.mzdx.zht.service.ReviewService;
+import com.mzdx.zht.vo.ReviewVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,11 @@ public class ReviewController {
     
     @Operation(summary = "获取用户评价列表")
     @GetMapping("/user/{userId}")
-    public Result<Page<Review>> getUserReviews(
+    public Result<Page<ReviewVO>> getUserReviews(
             @PathVariable Long userId,
             @RequestParam(defaultValue = "1") Integer current,
             @RequestParam(defaultValue = "10") Integer size) {
-        Page<Review> page = reviewService.getUserReviews(userId, current, size);
+        Page<ReviewVO> page = reviewService.getUserReviews(userId, current, size);
         return Result.success(page);
     }
     

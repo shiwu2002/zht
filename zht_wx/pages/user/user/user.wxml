@@ -14,17 +14,17 @@
   <!-- 统计卡片 -->
   <view class="stats-card">
     <view class="stats-row">
-      <view class="stat-item" bindtap="toItem">
+      <view class="stat-item" bindtap="toItem" hover-class="stat-hover">
         <text class="stat-num">{{stats.itemCount}}</text>
         <text class="stat-label">发布</text>
       </view>
       <view class="stat-divider"></view>
-      <view class="stat-item" bindtap="toFavorite">
+      <view class="stat-item" bindtap="toFavorite" hover-class="stat-hover">
         <text class="stat-num">{{stats.favoriteCount}}</text>
         <text class="stat-label">收藏</text>
       </view>
       <view class="stat-divider"></view>
-      <view class="stat-item" bindtap="toExchange">
+      <view class="stat-item" bindtap="toExchange" hover-class="stat-hover">
         <text class="stat-num">{{stats.exchangeCount}}</text>
         <text class="stat-label">交换</text>
       </view>

@@ -12,6 +12,7 @@ import com.mzdx.zht.exception.BusinessException;
 import com.mzdx.zht.mapper.ReviewMapper;
 import com.mzdx.zht.service.ReviewService;
 import com.mzdx.zht.service.UserService;
+import com.mzdx.zht.vo.ReviewVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -58,11 +59,27 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review> impleme
     }
     
     @Override
-    public Page<Review> getUserReviews(Long userId, Integer current, Integer size) {
+    public Page<ReviewVO> getUserReviews(Long userId, Integer current, Integer size) {
         Page<Review> page = new Page<>(current, size);
-        return this.page(page, new LambdaQueryWrapper<Review>()
+        Page<Review> reviewPage = this.page(page, new LambdaQueryWrapper<Review>()
                 .eq(Review::getReviewedId, userId)
                 .orderByDesc(Review::getCreateTime));
+        
+        // 转换为 ReviewVO，包含评价者的昵称和头像
+        Page<ReviewVO> voPage = new Page<>(current, size);
+        voPage.setTotal(reviewPage.getTotal());
+        voPage.setRecords(reviewPage.getRecords().stream().map(review -> {
+            ReviewVO reviewVO = BeanUtil.copyProperties(review, ReviewVO.class);
+            // 获取评价者信息
+            User reviewer = userService.getById(review.getReviewerId());
+            if (reviewer != null) {
+                reviewVO.setReviewerNickname(reviewer.getNickname());
+                reviewVO.setReviewerAvatar(reviewer.getAvatar());
+            }
+            return reviewVO;
+        }).toList());
+        
+        return voPage;
     }
     
     @Override

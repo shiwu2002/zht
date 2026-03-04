@@ -1,5 +1,13 @@
 <!--pages/message/chat.wxml-->
 <view class="container">
+  <!-- 物品信息卡片（如果从物品页面进入） -->
+  <view class="item-info-card" wx:if="{{showItemInfo && itemTitle}}">
+    <view class="item-info-content">
+      <image class="item-info-icon" src="/images/other/wodefabu.png" mode="aspectFit"></image>
+      <text class="item-info-text">关于：{{itemTitle}}</text>
+    </view>
+  </view>
+  
   <scroll-view class="message-list" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation>
     <view class="message-item {{item.senderId === userId ? 'self' : 'other'}}" 
           wx:for="{{messages}}" wx:key="id" id="msg-{{index}}">
@@ -12,7 +20,7 @@
   </scroll-view>
 
   <view class="input-bar">
-    <input class="input" placeholder="输入消息..." value="{{inputValue}}" bindinput="onInput" confirm-type="send" bindconfirm="onSend" />
+    <input class="input" placeholder="{{showItemInfo ? '咨询物品信息...' : '输入消息...'}}" value="{{inputValue}}" bindinput="onInput" confirm-type="send" bindconfirm="onSend" />
     <view class="send-btn" bindtap="onSend">发送</view>
   </view>
 </view>

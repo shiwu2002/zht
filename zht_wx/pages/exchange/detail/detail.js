@@ -1,5 +1,5 @@
 // pages/exchange/detail.js
-const { exchangeApi } = require('../../../utils/api');
+const { exchangeApi, reviewApi, userApi } = require('../../../utils/api');
 
 Page({
   data: {
@@ -10,7 +10,9 @@ Page({
     isApplicant: false,
     // 物品信息
     offerItem: null,
-    requestItem: null
+    requestItem: null,
+    // 评价信息
+    review: null
   },
 
   onLoad(options) {
@@ -18,6 +20,7 @@ Page({
     const userInfo = wx.getStorageSync('userInfo');
     this.setData({ userId: userInfo?.id || 0 });
     this.loadDetail();
+    this.loadReview();
   },
 
   // 提取图片 URL（处理可能的数组格式）
@@ -295,11 +298,54 @@ Page({
             await exchangeApi.complete(this.data.id);
             wx.showToast({ title: '已完成', icon: 'success' });
             this.loadDetail();
+            this.loadReview();
           } catch (err) {
             console.error('完成失败', err);
           }
         }
       }
     });
+  },
+
+  // 加载评价
+  async loadReview() {
+    try {
+      const res = await reviewApi.getExchangeReview(this.data.id);
+      if (res.data) {
+        const review = res.data;
+        // 补充评价者头像和名称
+        const enrichedReview = await this.enrichReviewData(review);
+        this.setData({ review: enrichedReview });
+      }
+    } catch (err) {
+      // 如果没有评价，不显示错误
+      if (err.code !== 404) {
+        console.error('加载评价失败', err);
+      }
+    }
+  },
+
+  // 补充评价数据（头像、名称）
+  async enrichReviewData(review) {
+    if (!review) return null;
+    
+    try {
+      // 获取评价者信息
+      const reviewerId = review.reviewerId;
+      // 这里需要后端提供获取用户信息的接口
+      // 暂时使用默认值
+      return {
+        ...review,
+        reviewerAvatar: '/images/login/morentouxiang.png',
+        reviewerName: '用户'
+      };
+    } catch (err) {
+      console.error('获取评价者信息失败', err);
+      return {
+        ...review,
+        reviewerAvatar: '/images/login/morentouxiang.png',
+        reviewerName: '用户'
+      };
+    }
   }
 });

@@ -203,7 +203,7 @@ public class ExchangeServiceImpl extends ServiceImpl<ExchangeMapper, Exchange> i
     
     @Override
     public Page<ExchangeVO> getMyExchanges(Long userId, Integer current, Integer size, Integer type) {
-        Page<Exchange> page = new Page<>(current, size);
+        Page<Exchange> page = new Page<>(current, size, true);
         LambdaQueryWrapper<Exchange> wrapper = new LambdaQueryWrapper<>();
         
         // type: 1-我发起的，2-我收到的，其他 - 全部

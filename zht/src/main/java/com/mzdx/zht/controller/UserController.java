@@ -58,4 +58,11 @@ public class UserController {
         Integer score = userService.getCreditScore(userId);
         return Result.success(score);
     }
+
+    @Operation(summary = "获取其他用户信息")
+    @GetMapping("/info/{userId}")
+    public Result<UserVO> getUserInfoById(@PathVariable("userId") Long userId) {
+        UserVO userVO = userService.getUserInfo(userId);
+    return Result.success(userVO);
+}
 }

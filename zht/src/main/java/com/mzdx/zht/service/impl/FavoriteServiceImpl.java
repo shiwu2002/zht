@@ -82,7 +82,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
     
     @Override
     public Page<ItemVO> getMyFavorites(Long userId, Integer current, Integer size) {
-        Page<Favorite> page = new Page<>(current, size);
+        Page<Favorite> page = new Page<>(current, size, true);
         Page<Favorite> favoritePage = this.page(page, new LambdaQueryWrapper<Favorite>()
                 .eq(Favorite::getUserId, userId)
                 .orderByDesc(Favorite::getCreateTime));

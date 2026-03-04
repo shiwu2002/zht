@@ -27,12 +27,12 @@
       <view class="exchange-footer">
         <text class="time">{{item.createTime}}</text>
         <view class="actions" wx:if="{{item.status === 0}}">
-          <button class="action-btn reject" catchtap="rejectExchange" data-id="{{item.id}}">拒绝</button>
-          <button class="action-btn confirm" catchtap="confirmExchange" data-id="{{item.id}}">确认</button>
+          <button class="action-btn reject" hover-class="button-hover" catchtap="rejectExchange" data-id="{{item.id}}">拒绝</button>
+          <button class="action-btn confirm" hover-class="button-hover" catchtap="confirmExchange" data-id="{{item.id}}">确认</button>
         </view>
         <view class="actions" wx:if="{{item.status === 1}}">
-          <button class="action-btn cancel" catchtap="cancelExchange" data-id="{{item.id}}">取消</button>
-          <button class="action-btn complete" catchtap="completeExchange" data-id="{{item.id}}">完成</button>
+          <button class="action-btn cancel" hover-class="button-hover" catchtap="cancelExchange" data-id="{{item.id}}">取消</button>
+          <button class="action-btn complete" hover-class="button-hover" catchtap="completeExchange" data-id="{{item.id}}">完成</button>
         </view>
       </view>
     </view>

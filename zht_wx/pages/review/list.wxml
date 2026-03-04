@@ -1,0 +1,24 @@
+<!--pages/review/list.wxml-->
+<view class="container">
+  <view class="review-list">
+    <view class="review-item" wx:for="{{reviewList}}" wx:key="id">
+      <view class="review-header">
+        <image class="reviewer-avatar" src="{{item.reviewerAvatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
+        <view class="reviewer-info">
+          <text class="reviewer-name">{{item.reviewerName || '未知用户'}}</text>
+          <view class="rating">
+            <text class="star" wx:for="{{5}}" wx:for-item="starIndex" wx:key="*this">
+              {{starIndex <= item.rating ? '★' : '☆'}}
+            </text>
+          </view>
+        </view>
+        <text class="review-time">{{item.createTime}}</text>
+      </view>
+      <text class="review-content">{{item.content || '暂无评价内容'}}</text>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{reviewList.length === 0}}">
+    <text>暂无评价</text>
+  </view>
+</view>

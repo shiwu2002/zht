@@ -316,7 +316,7 @@ Content-Type: application/json
 - 查询参数:
   - current(int, 默认=1)
   - size(int, 默认=10)
-  - type(int, 可选)
+  - type(int, 1-我发起的，2-我收到的，其他 - 全部)
 - 成功响应:
   - data(Page<ExchangeVO>)
 
@@ -400,3 +400,121 @@ Content-Type: application/json
 - 方法: GET
 - 路径: `/api/message/conversations`
 - 需要登录: 是
+- 成功响应:
+  - data(Message[]) // 每条为最近会话的消息摘要，具体字段以实体为准
+
+### 8.3 获取聊天记录
+- 方法: GET
+- 路径: `/api/message/history`
+- 需要登录: 是
+- 查询参数:
+  - targetUserId(long, 必填)
+  - current(int, 默认=1)
+  - size(int, 默认=20)
+- 成功响应:
+  - data(Page<Message>)
+
+### 8.4 标记消息已读
+- 方法: POST
+- 路径: `/api/message/read/{messageId}`
+- 需要登录: 未强制(视实现)
+- 路径参数:
+  - messageId(long, 必填)
+- 成功响应:
+  - data(boolean)
+
+### 8.5 获取未读消息数
+- 方法: GET
+- 路径: `/api/message/unread-count`
+- 需要登录: 是
+- 成功响应:
+  - data(integer)
+
+
+## 9. 举报管理(Report)
+
+基础路径: `/api/report`
+
+### 9.1 提交举报
+- 方法: POST
+- 路径: `/api/report/submit`
+- 需要登录: 是
+- 请求体 Report(实体，字段参考后端定义)
+- 成功响应:
+  - data(boolean)
+
+### 9.2 获取举报列表（管理员）
+- 方法: GET
+- 路径: `/api/report/list`
+- 查询参数:
+  - current(int, 默认=1)
+  - size(int, 默认=10)
+  - status(int, 可选)
+- 成功响应:
+  - data(Page<Report>)
+
+### 9.3 处理举报（管理员）
+- 方法: POST
+- 路径: `/api/report/handle/{reportId}`
+- 路径参数:
+  - reportId(long, 必填)
+- 查询参数:
+  - status(int, 必填)
+  - handleResult(string, 必填)
+- 成功响应:
+  - data(boolean)
+
+
+## 附录
+
+### A. 请求与响应示例：分页返回
+```http
+GET /api/item/list?current=1&size=10&keyword=书籍
+```
+```json
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": {
+    "records": [
+      {
+        "id": 1,
+        "title": "Java 编程思想",
+        "description": "九成新",
+        "images": ["https://xx/1.png"],
+        "categoryId": 2,
+        "categoryName": "图书",
+        "tags": ["编程","Java"],
+        "exchangeType": 1,
+        "price": 50.00,
+        "location": "上海市徐汇区",
+        "favoriteCount": 5,
+        "isFavorite": false,
+        "createTime": "2024-01-01T10:00:00"
+      }
+    ],
+    "current": 1,
+    "size": 10,
+    "total": 36,
+    "pages": 4
+  },
+  "timestamp": 1710000000000
+}
+```
+
+### B. 认证说明
+- 建议前端在请求头中携带 Token，例如：
+  - Authorization: Bearer x.y.z
+- 服务端通过拦截器/过滤器解析后注入 `@RequestAttribute("userId")`。
+
+### C. 常见错误结构
+```json
+{
+  "code": 500,
+  "message": "操作失败",
+  "data": null,
+  "timestamp": 1710000000000
+}
+```
+
+版本: 1.0

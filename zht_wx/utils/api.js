@@ -53,7 +53,9 @@ const userApi = {
   getInfo: () => request({ url: '/user/info', method: 'GET' }),
   updateInfo: (data) => request({ url: '/user/update', method: 'PUT', data }),
   bindPhone: (phone) => request({ url: '/user/bind-phone', method: 'POST', data: { phone } }),
-  getCreditScore: () => request({ url: '/user/credit-score', method: 'GET' })
+  getCreditScore: () => request({ url: '/user/credit-score', method: 'GET' }),
+  // 获取其他用户信息
+  getUserInfoById: (userId) => request({ url: `/user/info/${userId}`, method: 'GET' })
 };
 
 /**
@@ -137,11 +139,27 @@ const favoriteApi = {
  * 消息相关 API
  */
 const messageApi = {
+  // 发送消息
   send: (data) => request({ url: '/message/send', method: 'POST', data }),
+  
+  // 获取会话列表 (所有聊天对象的最近消息摘要)
   getConversations: () => request({ url: '/message/conversations', method: 'GET' }),
+  
+  // 获取与特定用户的聊天记录 (需要传递 targetUserId)
   getHistory: (params) => request({ url: '/message/history', method: 'GET', data: params }),
+  
+  // 标记消息已读
   markRead: (messageId) => request({ url: `/message/read/${messageId}`, method: 'POST' }),
-  getUnreadCount: () => request({ url: '/message/unread-count', method: 'GET' })
+  
+  // 获取未读消息数
+  getUnreadCount: () => request({ url: '/message/unread-count', method: 'GET' }),
+  
+  // 获取与特定用户关于特定物品的聊天记录
+  getItemHistory: (targetUserId, itemId, params) => request({ 
+    url: '/message/history', 
+    method: 'GET', 
+    data: { ...params, targetUserId, itemId } 
+  })
 };
 
 /**

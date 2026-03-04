@@ -96,7 +96,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     @Override
     public Page<ItemVO> getItemList(Integer current, Integer size, Long categoryId,
                                      String keyword, Integer type, String sortBy) {
-        Page<Item> page = new Page<>(current, size);
+        Page<Item> page = new Page<>(current, size, true);
         LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper<>();
         
         wrapper.eq(Item::getStatus, 1);
@@ -127,7 +127,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     
     @Override
     public Page<ItemVO> getMyItems(Long userId, Integer current, Integer size) {
-        Page<Item> page = new Page<>(current, size);
+        Page<Item> page = new Page<>(current, size, true);
         LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Item::getUserId, userId)
                .orderByDesc(Item::getCreateTime);

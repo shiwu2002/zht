@@ -18,7 +18,8 @@
     "pages/favorite/favorite",
     "pages/user/user/user",
     "pages/user/edit/edit",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/review/list/list"
   ],  
   "permission": {
     "scope.userLocation": {
