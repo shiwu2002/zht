@@ -12,8 +12,10 @@ public interface UserService extends IService<User> {
     
     /**
      * 微信小程序登录
+     * @param loginDTO 登录参数
+     * @return 包含 token 和用户信息的 Map
      */
-    String login(LoginDTO loginDTO);
+    Object login(LoginDTO loginDTO);
     
     /**
      * 获取用户信息
@@ -29,6 +31,30 @@ public interface UserService extends IService<User> {
      * 绑定手机号
      */
     boolean bindPhone(Long userId, String phone);
+    
+    /**
+     * 发送邮箱验证码
+     * @param userId 用户 ID
+     * @param email 邮箱地址
+     */
+    void sendEmailCode(Long userId, String email);
+    
+    /**
+     * 验证邮箱
+     * @param userId 用户 ID
+     * @param code 验证码
+     * @return 验证结果
+     */
+    boolean verifyEmail(Long userId, String code);
+    
+    /**
+     * 绑定邮箱
+     * @param userId 用户 ID
+     * @param email 邮箱地址
+     * @param code 验证码
+     * @return 绑定结果
+     */
+    boolean bindEmail(Long userId, String email, String code);
     
     /**
      * 获取用户信用分

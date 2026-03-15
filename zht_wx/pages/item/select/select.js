@@ -72,8 +72,19 @@ Page({
   },
 
   onSelect(e) {
-    const selectedItem = e.currentTarget.dataset.item;
-    
+    const itemId = e.currentTarget.dataset.id;
+    const selectedItem = this.data.itemList.find(item => item.id === itemId);
+
+    if (!selectedItem) {
+      wx.showToast({ title: '物品不存在', icon: 'none' });
+      return;
+    }
+
+    if (selectedItem.id === this.data.excludeId) {
+      wx.showToast({ title: '不能选择自己的物品', icon: 'none' });
+      return;
+    }
+
     // 将选中的物品保存到全局变量
     if (this.data.type === 'offer') {
       app.globalData.selectedOfferItem = selectedItem;

@@ -19,6 +19,18 @@ Page({
     }
   },
 
+  onShow() {
+    // 监听选择物品返回
+    const selectedItem = app.globalData.selectedOfferItem;
+    if (selectedItem) {
+      this.setData({
+        offerItem: selectedItem,
+        offerItemId: selectedItem.id
+      });
+      app.globalData.selectedOfferItem = null;
+    }
+  },
+
   async loadRequestItem() {
     try {
       const res = await itemApi.getDetail(this.data.requestItemId);
@@ -67,15 +79,3 @@ Page({
     }
   }
 });
-
-// 监听选择物品返回
-Page.prototype.onShow = function() {
-  const selectedItem = app.globalData.selectedOfferItem;
-  if (selectedItem) {
-    this.setData({
-      offerItem: selectedItem,
-      offerItemId: selectedItem.id
-    });
-    app.globalData.selectedOfferItem = null;
-  }
-};

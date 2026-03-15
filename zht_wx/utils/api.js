@@ -53,6 +53,8 @@ const userApi = {
   getInfo: () => request({ url: '/user/info', method: 'GET' }),
   updateInfo: (data) => request({ url: '/user/update', method: 'PUT', data }),
   bindPhone: (phone) => request({ url: '/user/bind-phone', method: 'POST', data: { phone } }),
+  sendEmailCode: (email) => request({ url: '/user/send-email-code', method: 'POST', data: { email } }),
+  bindEmail: (email, code) => request({ url: '/user/bind-email', method: 'POST', data: { email, code } }),
   getCreditScore: () => request({ url: '/user/credit-score', method: 'GET' }),
   // 获取其他用户信息
   getUserInfoById: (userId) => request({ url: `/user/info/${userId}`, method: 'GET' })

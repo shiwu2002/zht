@@ -116,6 +116,13 @@
   margin-bottom: 16rpx;
 }
 
+.avatar-tip-text {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+  display: block;
+}
+
 .default-avatar-list {
   display: flex;
   gap: 20rpx;

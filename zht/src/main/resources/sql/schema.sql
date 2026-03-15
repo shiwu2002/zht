@@ -7,11 +7,13 @@ USE zht;
 
 -- 用户表
 CREATE TABLE IF NOT EXISTS `tb_user` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-    `openid` VARCHAR(100) NOT NULL COMMENT '微信openid',
+    `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户 ID',
+    `openid` VARCHAR(100) NOT NULL COMMENT '微信 openid',
     `nickname` VARCHAR(50) COMMENT '昵称',
     `avatar` VARCHAR(255) COMMENT '头像',
     `phone` VARCHAR(20) COMMENT '手机号',
+    `email` VARCHAR(100) COMMENT '邮箱',
+    `email_verified` TINYINT DEFAULT 0 COMMENT '邮箱是否验证：0-未验证，1-已验证',
     `gender` TINYINT COMMENT '性别：0-未知，1-男，2-女',
     `address` VARCHAR(200) COMMENT '地址',
     `credit_score` INT DEFAULT 100 COMMENT '信用分',
@@ -22,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `tb_user` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_openid` (`openid`),
     KEY `idx_phone` (`phone`),
+    KEY `idx_email` (`email`),
     KEY `idx_deleted` (`deleted`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
 

@@ -1,29 +1,46 @@
 <!--pages/exchange/create.wxml-->
 <view class="container">
-  <view class="section">
-    <text class="section-title">我提供的物品</text>
+  <!-- 我提供的物品 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">我提供的物品</text>
+    </view>
     <view class="item-selector" bindtap="selectOfferItem">
-      <text wx:if="{{!offerItem}}" class="placeholder">请选择物品</text>
+      <view wx:if="{{!offerItem}}" class="empty-state">
+        <text class="empty-icon">📦</text>
+        <text class="empty-text">点击选择物品</text>
+      </view>
       <view wx:else class="selected-item">
         <image class="item-image" src="{{offerItem.images[0]}}" mode="aspectFill"></image>
-        <text class="item-title">{{offerItem.title}}</text>
+        <view class="item-info">
+          <text class="item-title">{{offerItem.title}}</text>
+          <text class="item-desc">{{offerItem.description}}</text>
+        </view>
+        <text class="arrow-icon">›</text>
       </view>
     </view>
   </view>
 
-  <view class="section">
-    <text class="section-title">我想换的物品</text>
-    <view class="item-info">
+  <!-- 我想换的物品 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">我想换的物品</text>
+    </view>
+    <view class="item-detail-box">
       <image class="item-image" src="{{requestItem.images[0]}}" mode="aspectFill"></image>
-      <view class="item-detail">
+      <view class="item-info">
         <text class="item-title">{{requestItem.title}}</text>
         <text class="item-desc">{{requestItem.description}}</text>
       </view>
     </view>
   </view>
 
-  <view class="section">
-    <text class="section-title">留言</text>
+  <!-- 留言 -->
+  <view class="card">
+    <view class="card-header">
+      <text class="card-title">留言</text>
+      <text class="char-count">{{message.length}}/200</text>
+    </view>
     <textarea class="message-input" placeholder="给 TA 说点什么吧..." value="{{message}}" bindinput="onMessageInput" maxlength="200" />
   </view>
 

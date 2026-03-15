@@ -1,12 +1,12 @@
 <!--pages/item/select.wxml-->
 <view class="container">
   <view class="item-list">
-    <view 
-      class="item-card {{item.id === excludeId ? 'disabled' : ''}}" 
-      wx:for="{{itemList}}" 
-      wx:key="id" 
-      data-item="{{item}}"
-      bindtap="onSelect">
+    <view
+      class="item-card {{item.id === excludeId ? 'disabled' : ''}}"
+      wx:for="{{itemList}}"
+      wx:key="id"
+      bindtap="onSelect"
+      data-id="{{item.id}}">
       <image class="item-image" src="{{item.images[0]}}" mode="aspectFill"></image>
       <view class="item-info">
         <text class="item-title">{{item.title}}</text>
@@ -20,10 +20,10 @@
       <view class="select-mask" wx:if="{{item.id === excludeId}}"></view>
     </view>
   </view>
-  
+
   <view class="empty" wx:if="{{itemList.length === 0}}">
     <text>暂无物品</text>
   </view>
-  
+
   <view class="load-more" wx:if="{{loading}}">加载中...</view>
 </view>

@@ -22,14 +22,48 @@ Page({
   // 微信登录
   doWxLogin() {
     wx.showLoading({ title: '登录中...' });
-    
+
     app.wxLogin().then(code => {
       console.log('微信登录成功，code:', code);
       this.globalDataCode = code;
-      wx.hideLoading();
+      // 调用后端登录接口（首次登录不需要传 nickname 和 avatar）
+      console.log('开始调用后端登录接口...');
+      userApi.login({
+        code: code,
+        nickname: '',
+        avatar: ''
+      }).then(res => {
+        console.log('后端登录成功，返回数据:', res);
+        // 保存 token
+        wx.setStorageSync('token', res.data.token);
+        const userInfo = res.data.user;
+
+        // 检查用户信息是否完善
+        if (userInfo && userInfo.nickname && userInfo.avatar) {
+          // 已有昵称和头像，直接跳转首页
+          console.log('用户信息完善，跳转首页');
+          wx.setStorageSync('userInfo', userInfo);
+          wx.hideLoading();
+          wx.switchTab({
+            url: '/pages/index/index'
+          });
+        } else {
+          // 需要完善信息
+          console.log('用户信息不完善，需要补充');
+          wx.hideLoading();
+          this.setData({
+            nickname: userInfo.nickname || '',
+            avatar: userInfo.avatar || ''
+          });
+        }
+      }).catch(err => {
+        console.error('后端登录失败:', err);
+        wx.hideLoading();
+        wx.showToast({ title: err.message || '登录失败', icon: 'none' });
+      });
     }).catch(err => {
       wx.hideLoading();
-      wx.showToast({ title: '登录失败', icon: 'none' });
+      wx.showToast({ title: '微信登录失败', icon: 'none' });
       console.error('微信登录失败:', err);
     });
   },
@@ -87,33 +121,29 @@ Page({
       return;
     }
 
-    wx.showLoading({ title: '登录中...' });
+    wx.showLoading({ title: '保存中...' });
 
-    // 调用登录接口
-    userApi.login({
-      code: this.globalDataCode,
+    // 使用 updateInfo 接口更新用户信息
+    userApi.updateInfo({
       nickname: this.data.nickname,
       avatar: this.data.avatar
     }).then(res => {
-      // 保存 token
-
-      wx.setStorageSync('token', res.data);
-      console.log(res.data)
+      // 获取最新用户信息
+      return userApi.getInfo();
+    }).then(res => {
       // 保存用户信息
-      wx.setStorageSync('userInfo', {
-        nickname: this.data.nickname,
-        avatar: this.data.avatar
-      });
+      wx.setStorageSync('userInfo', res.data);
 
       wx.hideLoading();
-      
+
       // 跳转至首页
       wx.switchTab({
         url: '/pages/index/index'
       });
     }).catch(err => {
       wx.hideLoading();
-      console.error('登录失败:', err);
+      wx.showToast({ title: err.message || '保存失败', icon: 'none' });
+      console.error('保存失败:', err);
     });
   }
 });

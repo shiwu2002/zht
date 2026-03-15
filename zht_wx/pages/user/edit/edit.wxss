@@ -71,17 +71,35 @@
   justify-content: space-between;
 }
 
-.phone {
+.email-row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.email {
   font-size: 28rpx;
   color: #999999;
 }
 
-.bind-btn {
-  padding: 8rpx 24rpx;
-  font-size: 24rpx;
+.send-code-btn {
+  padding: 4rpx 12rpx;
+  font-size: 22rpx;
   background: #07c160;
   color: #ffffff;
   border-radius: 8rpx;
+  white-space: nowrap;
+  line-height: 1.8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.send-code-btn.disabled {
+  background: #cccccc;
 }
 
 .save-btn {

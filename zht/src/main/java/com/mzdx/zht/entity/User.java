@@ -14,6 +14,8 @@ public class User {
     private String nickname;
     private String avatar;
     private String phone;
+    private String email;
+    private Integer emailVerified;
     private Integer gender;
     private String address;
     private Integer creditScore;

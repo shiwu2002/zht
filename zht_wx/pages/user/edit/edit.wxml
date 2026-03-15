@@ -19,11 +19,18 @@
     </view>
 
     <view class="form-item">
-      <text class="label">手机号</text>
-      <view class="phone-row">
-        <text class="phone">{{phone || '未绑定'}}</text>
-        <button class="bind-btn" wx:if="{{!phone}}" bindtap="bindPhone">绑定</button>
+      <text class="label">邮箱</text>
+      <view class="email-row">
+        <input class="input" value="{{email}}" bindinput="onEmailInput" placeholder="请输入邮箱地址" />
+        <view class="send-code-btn {{countdown > 0 || sendingCode ? 'disabled' : ''}}" wx:if="{{!emailVerified && email}}" bindtap="sendCode">
+          {{countdown > 0 ? countdown + 's' : '获取验证码'}}
+        </view>
       </view>
+    </view>
+
+    <view class="form-item" wx:if="{{!emailVerified && email}}">
+      <text class="label">验证码</text>
+      <input class="input" value="{{emailCode}}" bindinput="onEmailCodeInput" type="number" placeholder="请输入 6 位验证码" maxlength="6" />
     </view>
 
     <view class="form-item">

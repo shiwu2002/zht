@@ -5,27 +5,21 @@
     <text class="login-subtitle">登录后享受更多服务</text>
   </view>
 
-  <view class="avatar-section">
+  <!-- 头像选择 -->
+  <view class="avatar-section" wx:if="{{!avatar}}">
     <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-      <view class="avatar-container" wx:if="{{avatar}}">
-        <image class="avatar" src="{{avatar}}" mode="aspectFill" />
-        <view class="avatar-edit">
-          <text class="iconfont icon-camera"></text>
-        </view>
-      </view>
-      
-      <view class="avatar-placeholder" wx:else>
+      <view class="avatar-placeholder">
         <text class="iconfont icon-camera"></text>
         <text class="placeholder-text">点击选择头像</text>
       </view>
     </button>
 
-    <view class="default-avatars" wx:if="{{!avatar}}">
+    <view class="default-avatars">
       <text class="avatar-tip">或选择默认头像</text>
       <view class="default-avatar-list">
-        <view 
-          class="default-avatar-item" 
-          wx:for="{{defaultAvatars}}" 
+        <view
+          class="default-avatar-item"
+          wx:for="{{defaultAvatars}}"
           wx:key="*this"
           data-avatar="{{item}}"
           catchtap="onSelectDefaultAvatar"
@@ -36,13 +30,27 @@
     </view>
   </view>
 
+  <!-- 已选头像显示 -->
+  <view class="avatar-section" wx:if="{{avatar}}">
+    <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <view class="avatar-container">
+        <image class="avatar" src="{{avatar}}" mode="aspectFill" />
+        <view class="avatar-edit">
+          <text class="iconfont icon-camera"></text>
+        </view>
+      </view>
+    </button>
+    <text class="avatar-tip-text">点击可更换头像</text>
+  </view>
+
+  <!-- 昵称设置 -->
   <view class="nickname-section">
     <view class="nickname-input-container" wx:if="{{isEditingNickname}}">
       <text class="nickname-label">昵称:</text>
-      <input 
-        class="nickname-input" 
+      <input
+        class="nickname-input"
         type="text"
-        placeholder="请输入昵称" 
+        placeholder="请输入昵称"
         value="{{nickname}}"
         bindinput="onNicknameInput"
         bindblur="onConfirmNickname"
@@ -50,9 +58,8 @@
         bindconfirm="onConfirmNickname"
         focus="{{isEditingNickname}}"
       />
-      
     </view>
-    
+
     <view class="nickname-display" wx:else catchtap="onEditNickname">
       <text class="nickname-label">昵称：</text>
       <text class="nickname-text">{{nickname || '点击设置昵称'}}</text>
