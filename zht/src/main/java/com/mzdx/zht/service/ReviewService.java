@@ -25,4 +25,9 @@ public interface ReviewService extends IService<Review> {
      * 获取交换评价
      */
     Review getExchangeReview(Long exchangeId, Long reviewerId);
+
+    /**
+     * 获取交换的所有评价（双方评价）
+     */
+    java.util.List<ReviewVO> getExchangeReviews(Long exchangeId);
 }

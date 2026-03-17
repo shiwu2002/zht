@@ -66,22 +66,24 @@
   </view>
 
   <!-- 评价信息 -->
-  <view class="section" wx:if="{{review}}">
+  <view class="section" wx:if="{{reviewList.length > 0}}">
     <text class="section-title">评价信息</text>
-    <view class="review-content">
-      <view class="review-header">
-        <image class="review-avatar" src="{{review.reviewerAvatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
-        <view class="review-info">
-          <text class="review-name">{{review.reviewerName || '未知用户'}}</text>
-          <view class="review-rating">
-            <text class="star" wx:for="{{5}}" wx:key="*this">
-              {{index < review.rating ? '★' : '☆'}}
-            </text>
+    <view class="review-list">
+      <view class="review-content" wx:for="{{reviewList}}" wx:key="id">
+        <view class="review-header">
+          <image class="review-avatar" src="{{item.reviewerAvatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
+          <view class="review-info">
+            <text class="review-name">{{item.reviewerNickname || '未知用户'}}</text>
+            <view class="review-rating">
+              <text class="star" wx:for="{{5}}" wx:key="*this">
+                {{index < item.rating ? '★' : '☆'}}
+              </text>
+            </view>
           </view>
         </view>
+        <text class="review-text">{{item.content || '暂无评价内容'}}</text>
+        <text class="review-time">{{item.createTime}}</text>
       </view>
-      <text class="review-text">{{review.content || '暂无评价内容'}}</text>
-      <text class="review-time">{{review.createTime}}</text>
     </view>
   </view>
 
@@ -102,8 +104,8 @@
     <button class="action-btn complete" bindtap="onComplete">完成</button>
   </view>
 
-  <!-- 交换已完成，且当前用户是申请人，且还没有评价，显示"去评价"按钮 -->
-  <view class="actions" wx:if="{{detail.status === 2 && isApplicant && canReview}}">
+  <!-- 交换已完成，且当前用户还未评价，显示"去评价"按钮 -->
+  <view class="actions" wx:if="{{detail.status === 2 && canReview}}">
     <button class="action-btn review" bindtap="goToReview">去评价</button>
   </view>
 </view>

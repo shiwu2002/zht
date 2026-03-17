@@ -88,4 +88,22 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review> impleme
                 .eq(Review::getExchangeId, exchangeId)
                 .eq(Review::getReviewerId, reviewerId));
     }
+
+    @Override
+    public java.util.List<ReviewVO> getExchangeReviews(Long exchangeId) {
+        java.util.List<Review> reviews = this.list(new LambdaQueryWrapper<Review>()
+                .eq(Review::getExchangeId, exchangeId)
+                .orderByAsc(Review::getCreateTime));
+
+        return reviews.stream().map(review -> {
+            ReviewVO reviewVO = BeanUtil.copyProperties(review, ReviewVO.class);
+            // 获取评价者信息
+            User reviewer = userService.getById(review.getReviewerId());
+            if (reviewer != null) {
+                reviewVO.setReviewerNickname(reviewer.getNickname());
+                reviewVO.setReviewerAvatar(reviewer.getAvatar());
+            }
+            return reviewVO;
+        }).toList();
+    }
 }

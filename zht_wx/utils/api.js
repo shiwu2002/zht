@@ -124,7 +124,8 @@ const exchangeApi = {
 const reviewApi = {
   add: (data) => request({ url: '/review/add', method: 'POST', data }),
   getUserList: (userId, params) => request({ url: `/review/user/${userId}`, method: 'GET', data: params }),
-  getExchangeReview: (exchangeId) => request({ url: `/review/exchange/${exchangeId}`, method: 'GET' })
+  getExchangeReview: (exchangeId) => request({ url: `/review/exchange/${exchangeId}`, method: 'GET' }),
+  getExchangeReviews: (exchangeId) => request({ url: `/review/exchange/list/${exchangeId}`, method: 'GET' })
 };
 
 /**

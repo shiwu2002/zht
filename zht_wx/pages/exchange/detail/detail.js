@@ -13,7 +13,8 @@ Page({
     requestItem: null,
     // 评价信息
     review: null,
-    // 是否可以评价（交换已完成且当前用户是申请人且还未评价）
+    reviewList: [],
+    // 是否可以评价（交换已完成且当前用户还未评价）
     canReview: false
   },
 
@@ -266,11 +267,11 @@ Page({
 
   // 检查是否可以评价
   async checkCanReview() {
-    // 只有交换已完成 (status=2)、且还未评价时才可以评价
+    // 只有交换已完成 (status=2)、且当前用户还未评价时才可以评价
     const statusOk = this.data.detail?.status === 2;
-    const noReview = !this.data.review;
+    const hasReview = !!this.data.review;
 
-    if (statusOk && noReview) {
+    if (statusOk && !hasReview) {
       this.setData({ canReview: true });
     }
   },
@@ -297,47 +298,38 @@ Page({
   // 加载评价
   async loadReview() {
     try {
+      // 查询当前用户是否已经评价过（后端从 token 获取 userId）
       const res = await reviewApi.getExchangeReview(this.data.id);
 
       if (res.data) {
-        const review = res.data;
-        // 补充评价者头像和名称
-        const enrichedReview = await this.enrichReviewData(review);
-        this.setData({
-          review: enrichedReview,
-          canReview: false // 已有评价，不能再次评价
-        });
-      } else {
-        // 没有评价，检查是否可以评价
-        this.checkCanReview();
+        // 当前用户已评价，显示评价内容（后端已返回 reviewerNickname 和 reviewerAvatar）
+        this.setData({ review: res.data });
       }
+
+      // 加载该交换的所有评价（双方的评价）
+      await this.loadAllReviews();
+
+      // 检查是否可以评价
+      this.checkCanReview();
     } catch (err) {
-      // 如果没有评价，不显示错误
       if (err.code !== 404) {
         console.error('加载评价失败', err);
       }
-      // 404 表示没有评价，检查是否可以评价
+      // 404 表示当前用户还没有评价，检查是否可以评价
+      await this.loadAllReviews();
       this.checkCanReview();
     }
   },
 
-  // 补充评价数据（头像、名称）
-  async enrichReviewData(review) {
-    if (!review) return null;
-
+  // 加载交换的所有评价
+  async loadAllReviews() {
     try {
-      const reviewerId = review.reviewerId;
-      return {
-        ...review,
-        reviewerAvatar: '/images/login/morentouxiang.png',
-        reviewerName: '用户'
-      };
+      const res = await reviewApi.getExchangeReviews(this.data.id);
+      if (res.data && Array.isArray(res.data)) {
+        this.setData({ reviewList: res.data });
+      }
     } catch (err) {
-      return {
-        ...review,
-        reviewerAvatar: '/images/login/morentouxiang.png',
-        reviewerName: '用户'
-      };
+      console.error('加载所有评价失败', err);
     }
   }
 });

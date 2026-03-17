@@ -21,6 +21,14 @@
   margin-top: 16rpx;
 }
 
+.review-content:first-child {
+  margin-top: 0;
+}
+
+.review-content:not(:last-child) {
+  margin-bottom: 20rpx;
+}
+
 .review-header {
   display: flex;
   align-items: center;
