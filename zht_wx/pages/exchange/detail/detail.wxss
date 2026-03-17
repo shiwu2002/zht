@@ -95,3 +95,4 @@
 .cancel { background: #ffffff; color: #ff9800; border: 1rpx solid #ff9800; }
 .complete { background: #2196f3; color: #ffffff; border: 1rpx solid #2196f3; }
 .confirm { background: #07c160; color: #ffffff; border: 1rpx solid #07c160; }
+.review { background: #ff9800; color: #ffffff; border: 1rpx solid #ff9800; }

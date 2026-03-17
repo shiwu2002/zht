@@ -12,15 +12,18 @@ Page({
     offerItem: null,
     requestItem: null,
     // 评价信息
-    review: null
+    review: null,
+    // 是否可以评价（交换已完成且当前用户是申请人且还未评价）
+    canReview: false
   },
 
   onLoad(options) {
     this.setData({ id: options.id });
     const userInfo = wx.getStorageSync('userInfo');
     this.setData({ userId: userInfo?.id || 0 });
+    // 先加载详情，再加载评价，最后检查是否可以评价
     this.loadDetail();
-    this.loadReview();
+    // loadReview 会在 loadDetail 完成后通过回调或 Promise 处理
   },
 
   // 提取图片 URL（处理可能的数组格式）
@@ -98,14 +101,10 @@ Page({
       }
       
       console.log('原始数据:', rawData);
-      console.log('当前用户 ID:', this.data.userId);
-      
+
       // 判断当前用户是申请人还是物品主人
       const isApplicant = rawData.applicantId === this.data.userId;
-      
-      console.log('是否为申请人:', isApplicant);
-      console.log('rawData.applicantId:', rawData.applicantId, 'this.data.userId:', this.data.userId);
-      
+
       // 构建对方信息（如果不是申请人，对方就是申请人；如果是申请人，对方就是物品主人）
       const targetUserInfo = isApplicant ? {
         nickname: rawData.ownerNickname || '未知用户',
@@ -116,18 +115,6 @@ Page({
         avatar: rawData.applicantAvatar || '/images/login/morentouxiang.png',
         credit: 0
       };
-      
-      console.log('对方信息:', targetUserInfo);
-      console.log('对方昵称:', targetUserInfo.nickname);
-      console.log('对方头像:', targetUserInfo.avatar);
-      
-      // 确保昵称和头像有值
-      if (!targetUserInfo.nickname || targetUserInfo.nickname === '未知用户') {
-        console.warn('对方昵称为空，使用默认值');
-      }
-      if (!rawData.itemTitle) {
-        console.warn('物品标题为空');
-      }
       
       // 格式化时间
       const formatDateTime = (dateStr) => {
@@ -172,46 +159,19 @@ Page({
         image: this.extractImageUrl(rawData.itemImage) || '/images/login/morentouxiang.png'
       };
       
-      console.log('映射后的数据:', formattedData);
-      console.log('提供的物品:', offerItem);
-      console.log('请求的物品:', requestItem);
-      console.log('targetUserName:', formattedData.targetUserName);
-      console.log('isApplicant:', isApplicant);
-      
-      // 调试图片路径
-      console.log('offerItemImage 原始值:', rawData.offerItemImage);
-      console.log('offerItemImage 类型:', typeof rawData.offerItemImage);
-      const extractedOfferImage = this.extractImageUrl(rawData.offerItemImage);
-      console.log('offerItemImage 提取后:', extractedOfferImage);
-      
-      const extractedItemImage = this.extractImageUrl(rawData.itemImage);
-      console.log('itemImage 原始值:', rawData.itemImage);
-      console.log('itemImage 类型:', typeof rawData.itemImage);
-      console.log('itemImage 提取后:', extractedItemImage);
-      
-      console.log('最终 offerItem:', offerItem);
-      console.log('最终 requestItem:', requestItem);
-      
-      this.setData({ 
+      this.setData({
         detail: formattedData,
         isApplicant: isApplicant,
         offerItem: offerItem,
-        requestItem: requestItem
+        requestItem: requestItem,
+        targetUserId: isApplicant ? rawData.ownerId : rawData.applicantId,
+        targetUserNickname: isApplicant ? rawData.ownerNickname : rawData.applicantNickname,
+        targetUserAvatar: isApplicant ? rawData.ownerAvatar : rawData.applicantAvatar,
+        canReview: false
       });
-      
-      // 验证 setData 后的值
-      setTimeout(() => {
-        console.log('验证 - page data.offerItem:', this.data.offerItem);
-        console.log('验证 - page data.requestItem:', this.data.requestItem);
-        console.log('验证 - offerItem.image:', this.data.offerItem.image);
-        console.log('验证 - requestItem.image:', this.data.requestItem.image);
-      }, 100);
-      
-      console.log('setData 完成');
-      console.log('page data.detail:', this.data.detail);
-      console.log('page data.isApplicant:', this.data.isApplicant);
-      console.log('page data.offerItem:', this.data.offerItem);
-      console.log('page data.requestItem:', this.data.requestItem);
+
+      // 加载详情完成后，加载评价
+      this.loadReview();
     } catch (err) {
       console.error('加载详情失败', err);
       wx.showToast({ title: '加载失败：' + (err.message || '未知错误'), icon: 'none' });
@@ -221,9 +181,7 @@ Page({
   // 图片加载错误处理
   onImageError(e) {
     const type = e.currentTarget.dataset.type;
-    console.error(`${type} 物品图片加载失败`, e);
-    
-    // 设置默认图片
+
     if (type === 'offer') {
       const newOfferItem = { ...this.data.offerItem, image: '/images/login/morentouxiang.png' };
       this.setData({ offerItem: newOfferItem });
@@ -297,8 +255,7 @@ Page({
           try {
             await exchangeApi.complete(this.data.id);
             wx.showToast({ title: '已完成', icon: 'success' });
-            this.loadDetail();
-            this.loadReview();
+            await this.loadDetail();
           } catch (err) {
             console.error('完成失败', err);
           }
@@ -307,40 +264,75 @@ Page({
     });
   },
 
+  // 检查是否可以评价
+  async checkCanReview() {
+    // 只有交换已完成 (status=2)、且还未评价时才可以评价
+    const statusOk = this.data.detail?.status === 2;
+    const noReview = !this.data.review;
+
+    if (statusOk && noReview) {
+      this.setData({ canReview: true });
+    }
+  },
+
+  // 跳转评价页面
+  goToReview() {
+    const { detail } = this.data;
+
+    // 从 detail 中获取目标用户 ID，或者从直接存储的字段获取
+    const targetUserId = this.data.targetUserId || detail?.targetUserId;
+    const targetUserNickname = this.data.targetUserNickname || detail?.targetUserName;
+    const targetUserAvatar = this.data.targetUserAvatar || detail?.targetUserAvatar;
+    const itemTitle = detail?.itemTitle || '';
+
+    if (!targetUserId) {
+      wx.showToast({ title: '用户信息不完整', icon: 'none' });
+      return;
+    }
+
+    const url = `/pages/review/add/add?exchangeId=${this.data.id}&targetUserId=${targetUserId}&targetNickname=${targetUserNickname || '未知用户'}&targetAvatar=${targetUserAvatar || ''}&itemTitle=${encodeURIComponent(itemTitle)}`;
+    wx.navigateTo({ url });
+  },
+
   // 加载评价
   async loadReview() {
     try {
       const res = await reviewApi.getExchangeReview(this.data.id);
+
       if (res.data) {
         const review = res.data;
         // 补充评价者头像和名称
         const enrichedReview = await this.enrichReviewData(review);
-        this.setData({ review: enrichedReview });
+        this.setData({
+          review: enrichedReview,
+          canReview: false // 已有评价，不能再次评价
+        });
+      } else {
+        // 没有评价，检查是否可以评价
+        this.checkCanReview();
       }
     } catch (err) {
       // 如果没有评价，不显示错误
       if (err.code !== 404) {
         console.error('加载评价失败', err);
       }
+      // 404 表示没有评价，检查是否可以评价
+      this.checkCanReview();
     }
   },
 
   // 补充评价数据（头像、名称）
   async enrichReviewData(review) {
     if (!review) return null;
-    
+
     try {
-      // 获取评价者信息
       const reviewerId = review.reviewerId;
-      // 这里需要后端提供获取用户信息的接口
-      // 暂时使用默认值
       return {
         ...review,
         reviewerAvatar: '/images/login/morentouxiang.png',
         reviewerName: '用户'
       };
     } catch (err) {
-      console.error('获取评价者信息失败', err);
       return {
         ...review,
         reviewerAvatar: '/images/login/morentouxiang.png',

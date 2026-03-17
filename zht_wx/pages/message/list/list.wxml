@@ -51,20 +51,21 @@
     </view>
 
     <view class="review-list" wx:if="{{reviews.length > 0}}">
-      <view class="review-item" wx:for="{{reviews}}" wx:key="id" 
+      <view class="review-item" wx:for="{{reviews}}" wx:key="id"
             data-review="{{item}}" bindtap="viewReview">
-        <view class="review-header">
-          <text class="review-type">评价</text>
-          <text class="review-time">{{item.createTime}}</text>
-        </view>
-        <view class="review-content">
-          <view class="rating">
-            <text class="star" wx:for="{{5}}" wx:for-item="star" wx:key="*this">{{star <= item.rating ? '★' : '☆'}}</text>
+        <image class="reviewer-avatar" src="{{item.reviewerAvatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
+        <view class="review-body">
+          <view class="review-header">
+            <text class="review-type">评价</text>
+            <text class="reviewer-name">{{item.reviewerNickname || '未知用户'}}</text>
+            <text class="review-time">{{item.createTime}}</text>
           </view>
-          <text class="review-text">{{item.content || '暂无内容'}}</text>
-        </view>
-        <view class="review-footer">
-          <text class="reviewer">评价人：{{item.userNickname}}</text>
+          <view class="review-content">
+            <view class="rating">
+              <text class="star" wx:for="{{5}}" wx:for-item="star" wx:key="*this">{{star <= item.rating ? '★' : '☆'}}</text>
+            </view>
+            <text class="review-text">{{item.content || '暂无内容'}}</text>
+          </view>
         </view>
       </view>
     </view>

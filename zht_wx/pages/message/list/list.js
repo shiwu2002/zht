@@ -12,10 +12,7 @@ Page({
   },
 
   onLoad() {
-    // 获取当前登录用户 ID
     const currentUserId = app.globalData.userInfo?.id;
-    console.log('onLoad 获取当前用户 ID:', currentUserId);
-    console.log('app.globalData.userInfo:', app.globalData.userInfo);
     this.setData({ userId: currentUserId });
   },
 
@@ -35,36 +32,31 @@ Page({
   async loadConversations() {
     try {
       const res = await messageApi.getConversations();
-      console.log('获取会话列表响应:', res);
-      console.log('响应 data 字段:', res.data);
-      
+
       // 后端返回的是消息记录数组，需要转换为会话列表
-      // 每条消息包含：id, senderId, receiverId, content, createTime 等
       const messages = res.data || [];
-      
+
       // 获取当前用户 ID
       const currentUserId = this.data.userId;
-      console.log('当前用户 ID:', currentUserId);
-      
+
       if (!currentUserId) {
-        console.error('错误：当前用户未登录');
         wx.showToast({ title: '请先登录', icon: 'none' });
         return;
       }
-      
+
       // 将消息转换为会话列表
       const conversationMap = new Map();
-      
+
       messages.forEach(msg => {
         // 确定对方用户 ID (不是当前用户的那个)
         const otherUserId = msg.senderId === currentUserId ? msg.receiverId : msg.senderId;
-        
+
         // 如果这个用户的会话还没记录，或者这条消息更新，则更新会话
         if (!conversationMap.has(otherUserId)) {
           conversationMap.set(otherUserId, {
             userId: otherUserId,
-            userNickname: '用户' + otherUserId, // 默认昵称
-            userAvatar: '/images/other/xiaoxi.png', // 默认头像
+            userNickname: msg.senderId === currentUserId ? msg.receiverNickname : msg.senderNickname,
+            userAvatar: msg.senderId === currentUserId ? msg.receiverAvatar : msg.senderAvatar,
             lastContent: msg.content,
             lastTime: msg.createTime,
             unreadCount: msg.isRead === 0 && msg.receiverId === currentUserId ? 1 : 0,
@@ -82,16 +74,13 @@ Page({
           }
         }
       });
-      
+
       // 转换为数组
       let conversations = Array.from(conversationMap.values());
-      console.log('转换后的会话列表:', conversations);
-      
-      // 批量加载用户详情信息
+
+      // 批量加载用户详情信息（补充 API 可能缺失的头像和昵称）
       conversations = await this.loadUserDetails(conversations);
-      console.log('加载用户详情后的会话列表:', conversations);
-      console.log('第一条会话数据:', conversations[0]);
-      
+
       this.setData({ conversations: conversations });
     } catch (err) {
       console.error('加载会话失败', err);
@@ -105,9 +94,7 @@ Page({
     const userIds = conversations
       .filter(c => !this.data.userCache[c.userId])
       .map(c => c.userId);
-    
-    console.log('需要加载用户详情的 ID:', userIds);
-    
+
     // 批量请求用户信息
     if (userIds.length > 0) {
       try {
@@ -127,9 +114,9 @@ Page({
             console.error('获取用户' + uid + '信息失败:', err);
           }
         });
-        
+
         await Promise.all(promises);
-        
+
         // 更新会话列表中的用户信息
         conversations = conversations.map(conv => {
           const userInfo = this.data.userCache[conv.userId];
@@ -146,7 +133,7 @@ Page({
         console.error('批量加载用户详情失败:', err);
       }
     }
-    
+
     return conversations;
   },
 
@@ -154,7 +141,6 @@ Page({
   async loadReviews() {
     try {
       if (!this.data.userId) {
-        console.log('用户未登录，跳过评价加载');
         return;
       }
 
@@ -162,7 +148,6 @@ Page({
         current: 1,
         size: 10
       });
-      console.log('获取评价列表响应:', res);
 
       let reviews = [];
       if (res.data && Array.isArray(res.data.records)) {
@@ -171,10 +156,41 @@ Page({
         reviews = res.data;
       }
 
-      console.log('处理后的评价列表:', reviews);
+      // 格式化评价时间
+      reviews = reviews.map(review => ({
+        ...review,
+        createTime: this.formatReviewTime(review.createTime)
+      }));
+
       this.setData({ reviews: reviews });
     } catch (err) {
       console.error('加载评价失败', err);
+    }
+  },
+
+  // 格式化评价时间
+  formatReviewTime(timeStr) {
+    if (!timeStr) return '';
+    try {
+      const date = new Date(timeStr);
+      const now = new Date();
+      const diff = now - date;
+
+      // 小于 1 分钟
+      if (diff < 60000) return '刚刚';
+      // 小于 1 小时
+      if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+      // 小于 24 小时
+      if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
+      // 小于 7 天
+      if (diff < 604800000) return Math.floor(diff / 86400000) + '天前';
+
+      // 超过 7 天显示具体日期
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${month}-${day}`;
+    } catch (e) {
+      return timeStr;
     }
   },
 
@@ -187,44 +203,38 @@ Page({
   // 跳转聊天
   toChat(e) {
     const user = e.currentTarget.dataset.user;
-    console.log('跳转到聊天页面，用户信息:', user);
-    console.log('用户 ID 类型:', typeof user.userId, '值:', user.userId);
-    console.log('用户完整数据:', JSON.stringify(user));
-    
+
     // 检查 userId 是否存在
     if (!user.userId) {
-      console.error('错误：用户 ID 不存在', user);
       wx.showToast({ title: '用户信息不完整', icon: 'none' });
       return;
     }
-    
-    // 构建跳转参数，注意参数名要与聊天页面接收的一致
+
+    // 构建跳转参数
     const params = {
-      targetUserId: user.userId,  // 使用 targetUserId 作为参数名
+      targetUserId: user.userId,
       userName: user.userNickname || '未知用户',
       avatar: user.userAvatar || '/images/other/xiaoxi.png'
     };
-    
+
     // 如果有物品信息，也一起传递
     if (user.itemId) {
       params.itemId = user.itemId;
       params.itemTitle = encodeURIComponent(user.itemTitle || '');
     }
-    
+
     // 构建查询字符串
     const queryString = Object.entries(params)
       .map(([key, value]) => `${key}=${value}`)
       .join('&');
-    
+
     const url = `/pages/message/chat/chat?${queryString}`;
-    console.log('跳转 URL:', url);
     wx.navigateTo({ url });
   },
 
-  // 查看评价详情 (跳转到交换详情或物品详情)
+  // 查看评价详情
   viewReview(e) {
     const review = e.currentTarget.dataset.review;
-    console.log('查看评价:', review);
     // TODO: 根据 exchangeId 跳转到交换详情页
     wx.showToast({ title: '功能开发中', icon: 'none' });
   }

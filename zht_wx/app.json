@@ -19,7 +19,8 @@
     "pages/user/user/user",
     "pages/user/edit/edit",
     "pages/logs/logs",
-    "pages/review/list/list"
+    "pages/review/list/list",
+    "pages/review/add/add"
   ],  
   "permission": {
     "scope.userLocation": {

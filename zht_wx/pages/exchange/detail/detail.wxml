@@ -101,4 +101,9 @@
     <button class="action-btn cancel" bindtap="onCancel">取消</button>
     <button class="action-btn complete" bindtap="onComplete">完成</button>
   </view>
+
+  <!-- 交换已完成，且当前用户是申请人，且还没有评价，显示"去评价"按钮 -->
+  <view class="actions" wx:if="{{detail.status === 2 && isApplicant && canReview}}">
+    <button class="action-btn review" bindtap="goToReview">去评价</button>
+  </view>
 </view>

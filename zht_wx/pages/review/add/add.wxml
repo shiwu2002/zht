@@ -1,0 +1,57 @@
+<!--pages/review/add.wxml-->
+<view class="container">
+  <!-- 交换信息卡片 -->
+  <view class="exchange-info">
+    <view class="info-header">
+      <text class="info-title">评价对象</text>
+    </view>
+    <view class="user-card">
+      <image class="user-avatar" src="{{targetUser.avatar || '/images/login/morentouxiang.png'}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <text class="user-nickname">{{targetUser.nickname || '未知用户'}}</text>
+        <text class="user-item">{{exchangeInfo.itemTitle || '未知物品'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评分 -->
+  <view class="rating-section">
+    <text class="section-title">评分</text>
+    <view class="rating-stars">
+      <text class="star {{index < rating ? 'active' : ''}}"
+            wx:for="{{5}}" wx:key="*this"
+            data-score="{{index + 1}}" bindtap="onSelectRating">
+        {{index < rating ? '★' : '☆'}}
+      </text>
+      <text class="rating-text">{{ratingText}}</text>
+    </view>
+  </view>
+
+  <!-- 评价内容 -->
+  <view class="comment-section">
+    <text class="section-title">评价内容</text>
+    <textarea class="comment-input"
+              placeholder="分享您对本次交换的感受..."
+              maxlength="200"
+              value="{{content}}"
+              bindinput="onInput"></textarea>
+    <text class="char-count">{{content.length}}/200</text>
+  </view>
+
+  <!-- 快捷标签 -->
+  <view class="tags-section">
+    <text class="section-title">快捷标签</text>
+    <view class="tags-list">
+      <text class="tag {{tags.indexOf(tag) !== -1 ? 'selected' : ''}}"
+            wx:for="{{tagOptions}}" wx:key="*this"
+            data-tag="{{item}}" bindtap="onSelectTag">
+        {{item}}
+      </text>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="onSubmit" disabled="{{rating === 0}}">提交评价</button>
+  </view>
+</view>
