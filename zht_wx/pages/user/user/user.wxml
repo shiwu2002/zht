@@ -70,9 +70,6 @@
     </view>
   </view>
 
-  <!-- 退出登录 -->
-  <button class="logout-btn" bindtap="onLogout" wx:if="{{isLogin}}">
-    退出登录
-  </button>
+
 
 </view>

@@ -4,9 +4,8 @@ const app = getApp();
 
 Page({
   data: {
-    userId: 0,
+    currentUserId: 0,
     userName: '',
-    otherAvatar: '',
     userInfo: null,
     messages: [],
     inputValue: '',
@@ -19,25 +18,33 @@ Page({
 
   onLoad(options) {
     console.log('聊天页面 onLoad 参数:', options);
-    
+
     // 接收参数，优先使用 targetUserId，兼容旧的 userId 参数
     const targetUserId = options.targetUserId || options.userId;
-    
+
+    // 存储目标用户 ID 用于后续 API 调用
+    this.targetUserId = targetUserId;
+
     this.setData({
-      userId: targetUserId,  // 存储到 userId 用于后续逻辑
       userName: options.userName,
       otherAvatar: options.avatar,
       itemId: options.itemId,
       itemTitle: options.itemTitle ? decodeURIComponent(options.itemTitle) : ''
     });
-    
+
     // 如果从物品页面进入，显示物品信息
     if (options.itemId) {
       this.setData({ showItemInfo: true });
     }
-    
+
     this.userInfo = app.globalData.userInfo;
-    this.setData({ userInfo: this.userInfo });
+    const currentUserId = this.userInfo?.id || 0;
+    console.log('当前用户 ID:', currentUserId, 'userInfo:', this.userInfo);
+
+    this.setData({
+      userInfo: this.userInfo,
+      currentUserId: currentUserId
+    });
     this.loadHistory();
   },
 
@@ -46,23 +53,33 @@ Page({
       let res;
       if (this.data.itemId) {
         // 加载关于特定物品的聊天记录
-        res = await messageApi.getItemHistory(this.data.userId, this.data.itemId, {
+        res = await messageApi.getItemHistory(this.targetUserId, this.data.itemId, {
           current: 1,
           size: 20
         });
       } else {
         // 加载与用户的所有聊天记录
         res = await messageApi.getHistory({
-          targetUserId: this.data.userId,
+          targetUserId: this.targetUserId,
           current: 1,
           size: 20
         });
       }
-      
+
+      console.log('聊天记录响应:', res);
+
       const messages = res.data.records.reverse();
-      this.setData({ 
-        messages: messages,
-        scrollToView: messages.length > 0 ? 'msg-' + (messages.length - 1) : ''
+      console.log('处理后的消息列表:', messages);
+
+      // 处理消息时间格式
+      const formattedMessages = messages.map(msg => ({
+        ...msg,
+        createTime: this.formatTime(msg.createTime)
+      }));
+
+      this.setData({
+        messages: formattedMessages,
+        scrollToView: formattedMessages.length > 0 ? 'msg-' + (formattedMessages.length - 1) : ''
       });
       
       // 标记未读消息为已读
@@ -116,7 +133,7 @@ Page({
 
     try {
       const sendData = {
-        receiverId: this.data.userId,
+        receiverId: this.targetUserId,
         content: content,
         type: 1
       };
@@ -131,6 +148,7 @@ Page({
       // 添加本地消息
       const newMessage = {
         senderId: this.userInfo.id,
+        senderAvatar: this.userInfo.avatar,
         content: content,
         createTime: this.formatTime(new Date())
       };
@@ -145,7 +163,13 @@ Page({
     }
   },
 
-  formatTime(date) {
+  formatTime(timeStr) {
+    if (!timeStr) {
+      const now = new Date();
+      return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    }
+    // 处理后端返回的字符串格式 "2026-03-17T23:29:17"
+    const date = new Date(timeStr);
     const h = String(date.getHours()).padStart(2, '0');
     const m = String(date.getMinutes()).padStart(2, '0');
     return `${h}:${m}`;

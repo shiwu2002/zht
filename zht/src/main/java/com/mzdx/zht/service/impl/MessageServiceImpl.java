@@ -4,10 +4,13 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mzdx.zht.dto.ChatMessageDTO;
 import com.mzdx.zht.dto.MessageDTO;
 import com.mzdx.zht.entity.Message;
+import com.mzdx.zht.entity.User;
 import com.mzdx.zht.mapper.MessageMapper;
 import com.mzdx.zht.service.MessageService;
+import com.mzdx.zht.service.UserService;
 import com.mzdx.zht.websocket.WebSocketSessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 消息服务实现类
@@ -25,8 +29,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> implements MessageService {
-    
+
     private final WebSocketSessionManager sessionManager;
+    private final UserService userService;
     
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -126,16 +131,65 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
     
     @Override
-    public Page<Message> getChatHistory(Long userId, Long targetUserId, Integer current, Integer size) {
-        Page<Message> page = new Page<>(current, size);
+    public Page<ChatMessageDTO> getChatHistory(Long userId, Long targetUserId, Integer current, Integer size) {
+        Page<Message> messagePage = new Page<>(current, size);
         LambdaQueryWrapper<Message> wrapper = new LambdaQueryWrapper<>();
-        
+
         wrapper.and(w -> w
                 .and(w1 -> w1.eq(Message::getSenderId, userId).eq(Message::getReceiverId, targetUserId))
                 .or(w2 -> w2.eq(Message::getSenderId, targetUserId).eq(Message::getReceiverId, userId))
         ).orderByDesc(Message::getCreateTime);
-        
-        return this.page(page, wrapper);
+
+        Page<Message> page = this.page(messagePage, wrapper);
+
+        // 转换为 ChatMessageDTO 并填充头像信息
+        Page<ChatMessageDTO> dtoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        List<ChatMessageDTO> dtoList = convertToDTOWithAvatars(page.getRecords(), userId, targetUserId);
+        dtoPage.setRecords(dtoList);
+
+        return dtoPage;
+    }
+
+    /**
+     * 将 Message 列表转换为 ChatMessageDTO 列表，并填充发送者和接收者的头像信息
+     * @param messages 消息列表
+     * @param userId 当前登录用户 ID
+     * @param targetUserId 对话目标用户 ID
+     * @return ChatMessageDTO 列表
+     */
+    private List<ChatMessageDTO> convertToDTOWithAvatars(List<Message> messages, Long userId, Long targetUserId) {
+        // 收集需要查询的用户 ID（去重）
+        Set<Long> userIds = new HashSet<>();
+        for (Message message : messages) {
+            userIds.add(message.getSenderId());
+            userIds.add(message.getReceiverId());
+        }
+
+        // 批量查询用户信息
+        List<User> users = userService.listByIds(userIds);
+        Map<Long, User> userMap = users.stream()
+                .collect(Collectors.toMap(User::getId, u -> u, (k1, k2) -> k1));
+
+        // 转换为 DTO
+        return messages.stream()
+                .map(message -> {
+                    ChatMessageDTO dto = BeanUtil.copyProperties(message, ChatMessageDTO.class);
+
+                    User sender = userMap.get(message.getSenderId());
+                    if (sender != null) {
+                        dto.setSenderAvatar(sender.getAvatar());
+                        dto.setSenderNickname(sender.getNickname());
+                    }
+
+                    User receiver = userMap.get(message.getReceiverId());
+                    if (receiver != null) {
+                        dto.setReceiverAvatar(receiver.getAvatar());
+                        dto.setReceiverNickname(receiver.getNickname());
+                    }
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
     
     @Override

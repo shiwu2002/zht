@@ -9,9 +9,9 @@
   </view>
   
   <scroll-view class="message-list" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation>
-    <view class="message-item {{item.senderId === userId ? 'self' : 'other'}}" 
+    <view class="message-item {{item.senderId === currentUserId ? 'self' : 'other'}}"
           wx:for="{{messages}}" wx:key="id" id="msg-{{index}}">
-      <image class="avatar" src="{{item.senderId === userId ? userInfo.avatar : otherAvatar}}" mode="aspectFill"></image>
+      <image class="avatar" src="{{item.senderAvatar || '/images/other/xiaoxi.png'}}" mode="aspectFill"></image>
       <view class="message-content">
         <text class="message-text">{{item.content}}</text>
         <text class="message-time">{{item.createTime}}</text>

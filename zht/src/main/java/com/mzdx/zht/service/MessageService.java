@@ -2,6 +2,7 @@ package com.mzdx.zht.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mzdx.zht.dto.ChatMessageDTO;
 import com.mzdx.zht.entity.Message;
 import com.mzdx.zht.dto.MessageDTO;
 
@@ -25,7 +26,7 @@ public interface MessageService extends IService<Message> {
     /**
      * 获取聊天记录
      */
-    Page<Message> getChatHistory(Long userId, Long targetUserId, Integer current, Integer size);
+    Page<ChatMessageDTO> getChatHistory(Long userId, Long targetUserId, Integer current, Integer size);
     
     /**
      * 标记消息已读

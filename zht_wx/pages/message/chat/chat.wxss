@@ -32,12 +32,14 @@
 
 .message-list {
   flex: 1;
-  padding: 30rpx;
+  padding: 1rpx;
+  padding-right: 50rpx;
   overflow-y: auto;
 }
 
 .message-item {
   display: flex;
+  align-items: flex-start;
   margin-bottom: 30rpx;
 }
 
@@ -50,10 +52,20 @@
   height: 80rpx;
   border-radius: 50%;
   flex-shrink: 0;
+  background: #e0e0e0;
+}
+
+.message-item.other .avatar {
+  margin-right: 20rpx;
+}
+
+.message-item.self .avatar {
+  margin-left: 20rpx;
+  margin-right: 10rpx;
 }
 
 .message-content {
-  max-width: 60%;
+  max-width: calc(100% - 120rpx);
   padding: 20rpx;
   border-radius: 12rpx;
   position: relative;
@@ -61,13 +73,11 @@
 
 .message-item.other .message-content {
   background: #ffffff;
-  margin-left: 20rpx;
   border-top-left-radius: 4rpx;
 }
 
 .message-item.self .message-content {
   background: #95ec69;
-  margin-right: 20rpx;
   border-top-right-radius: 4rpx;
 }
 

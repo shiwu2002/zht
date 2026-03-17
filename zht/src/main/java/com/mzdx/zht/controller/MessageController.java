@@ -2,6 +2,7 @@ package com.mzdx.zht.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mzdx.zht.common.Result;
+import com.mzdx.zht.dto.ChatMessageDTO;
 import com.mzdx.zht.dto.MessageDTO;
 import com.mzdx.zht.entity.Message;
 import com.mzdx.zht.service.MessageService;
@@ -40,12 +41,12 @@ public class MessageController {
     
     @Operation(summary = "获取聊天记录")
     @GetMapping("/history")
-    public Result<Page<Message>> getChatHistory(
+    public Result<Page<ChatMessageDTO>> getChatHistory(
             @RequestAttribute("userId") Long userId,
             @RequestParam Long targetUserId,
             @RequestParam(defaultValue = "1") Integer current,
             @RequestParam(defaultValue = "20") Integer size) {
-        Page<Message> page = messageService.getChatHistory(userId, targetUserId, current, size);
+        Page<ChatMessageDTO> page = messageService.getChatHistory(userId, targetUserId, current, size);
         return Result.success(page);
     }
     
